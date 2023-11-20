@@ -1,6 +1,8 @@
 # Proyek Tengah Semester Kelompok A13 -- pacil-bookstore
 ## Website: [http://pacil-bookstore.pbp.cs.ui.ac.id/](http://pacil-bookstore.pbp.cs.ui.ac.id/)
 
+### Link Berita Acara: https://docs.google.com/spreadsheets/d/16WONjLGPqOpak5w6WIo5dhGA5JXVEU15I9eXDtfJNIo/edit?usp=sharing
+
 Berikut deskripsi proyek kami.
 
 <h1>
