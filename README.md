@@ -16,7 +16,7 @@ Berikut deskripsi proyek kami.
 
 
 <h1>
-  Deskripsi aplikasi (nama dan fungsi aplikasi)
+  Deskripsi aplikasi
 </h1>
 Berdasarkan tema utama yang diberikan, yaitu "Literasi dan Buku", kelompok kami mengembangkan ide proyek toko buku. Aplikasi toko buku yang kami buat terdiri atas 3 role user, yaitu Admin, Member, dan Non-Member dengan masing-masing <i>role</i> memiliki kapabilitas akses yang berbeda-beda. Pada halaman utama, aplikasi toko buku kami akan menampilkan data umum buku seperti judul, <i>cover</i>, dan harga dengan fitur <i>sort</i> berdasarkan peringkat tertentu juga fitur <i>filter</i> berdasarkan kategori tertentu. Selain itu, pada halaman utama juga terdapat <i>search bar</i> juga <i>navigation bar</i> yang dapat mengarahkan pengguna untuk <i>register</i> atau <i>login</i> atau menampilkan <i>username</i> dari <i>user</i> yang sedang <i>login</i> di aplikasi. Kemudian jika <i>user</i> melakukan klik pada buku yang diinginkan, user akan diarahkan ke halaman berisi info detail buku, dimana pada halaman tersebut juga tersedia <i>button</i> untuk <i>add cart</i> dan <i>checkout</i> (pada Member). Kami juga menyediakan halaman keranjang atau <i>cart</i>, dimana Member dapat melihat item buku yang sudah dimasukkan ke keranjangnya untuk <i>checkout</i>.  Pengiriman buku yang dipesan oleh Member dapat diatur oleh <i>role</i> Admin, dimana <i>role</i> Admin juga memiliki akses untuk melihat info seluruh Member dan dapat berganti ke mode user biasa jika diinginkan.
 
