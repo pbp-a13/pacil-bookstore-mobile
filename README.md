@@ -24,10 +24,10 @@ Berdasarkan tema utama yang diberikan, yaitu "Literasi dan Buku", kelompok kami 
 <h1> Integrasi dengan Situs Web  </h1>
 <h3>Berikut adalah langkah-langkah yang akan dilakukan untuk mengintegrasikan aplikasi dengan server web:</h3>
 
-Mengimplementasikan sebuah wrapper class dengan menggunakan library http dan map untuk mendukung penggunaan cookie-based authentication pada aplikasi.
-Mengimplementasikan REST API pada Django (views.py) dengan menggunakan JsonResponse atau Django JSON Serializer.
-Mengimplementasikan desain front-end untuk aplikasi berdasarkan desain website yang sudah ada sebelumnya.
-Melakukan integrasi antara front-end dengan back-end dengan menggunakan konsep asynchronous HTTP.
+- Mengimplementasikan sebuah wrapper class dengan menggunakan library http dan map untuk mendukung penggunaan cookie-based authentication pada aplikasi. </br>
+- Mengimplementasikan REST API pada Django (views.py) dengan menggunakan JsonResponse atau Django JSON Serializer. </br>
+- Mengimplementasikan desain front-end untuk aplikasi berdasarkan desain website yang sudah ada sebelumnya.</br>
+- Melakukan integrasi antara front-end dengan back-end dengan menggunakan konsep asynchronous HTTP.</br>
 
 <h1>
   Penjelasan dan Pembagian Fitur
