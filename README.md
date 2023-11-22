@@ -1,4 +1,4 @@
-# Proyek Tengah Semester Kelompok A13 -- pacil-bookstore
+# Proyek Akhir Semester Kelompok A13 -- pacil-bookstore
 ## Website: [http://pacil-bookstore.pbp.cs.ui.ac.id/](http://pacil-bookstore.pbp.cs.ui.ac.id/)
 
 ### Link Berita Acara: https://docs.google.com/spreadsheets/d/16WONjLGPqOpak5w6WIo5dhGA5JXVEU15I9eXDtfJNIo/edit?usp=sharing
@@ -283,7 +283,7 @@ Models:
    - Dapat melihat informasi tentang buku, termasuk judul, pengarang, harga, dan rating
    - Jika ingin menambahkan buku ke keranjang (cart), user akan diminta untuk login atau melakukan pendaftaran
 2. Member:
-   - Dapat mengakses halaman "Main page (member)" dan fitur-fitur seluruh situs web
+   - Dapat mengakses halaman "Main page (member)" dan fitur-fitur seluruh situs aplikasi mobile
    - Bisa melihat dan membeli buku
    - Dapat menambahkan buku ke keranjang (cart) dan melakukan transaksi pembayaran
    - Memiliki saldo yang dapat diisi melalui halaman "Isi Saldo"
