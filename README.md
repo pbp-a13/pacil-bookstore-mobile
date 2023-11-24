@@ -283,7 +283,7 @@ Models:
    - Dapat melihat informasi tentang buku, termasuk judul, pengarang, harga, dan rating
    - Jika ingin menambahkan buku ke keranjang (cart), user akan diminta untuk login atau melakukan pendaftaran
 2. Member:
-   - Dapat mengakses halaman "Main page (member)" dan fitur-fitur seluruh situs aplikasi mobile
+   - Dapat mengakses halaman "Main page (member)" dan semua fitur aplikasi mobile
    - Bisa melihat dan membeli buku
    - Dapat menambahkan buku ke keranjang (cart) dan melakukan transaksi pembayaran
    - Memiliki saldo yang dapat diisi melalui halaman "Isi Saldo"
