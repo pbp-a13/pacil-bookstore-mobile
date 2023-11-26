@@ -49,7 +49,7 @@ Sumber database: https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
 - PJ: William Joel Matthew Quinn Rompis 2206081843
 - Berisi main page (member) dan main page (admin)
 - Menampilkan semua buku yang tersedia di toko buku.
-- Informasi buku yang ditampilkan: gambar buku, judul buku, pengarang buku, harga buku, dan rating buku
+- Informasi buku yang ditampilkan: judul buku, pengarang buku, harga buku, dan rating buku
 - Buku bisa diklik untuk mengalihkan ke book info page
 - Ada search bar untuk search buku berdasarkan judul atau pengarang.
 - Bisa sort/filter berdasarkan alphabetic, best-seller, top-rated.
@@ -153,7 +153,7 @@ Models:
 </h3>
 
 - Menampilkan buku-buku yang tersedia pada toko buku.
-- Informasi buku yang ditampilkan: gambar buku, judul buku, pengarang buku, harga buku, dan rating buku
+- Informasi buku yang ditampilkan: judul buku, pengarang buku, harga buku, dan rating buku
 - Buku bisa diklik untuk mengalihkan ke book info page
 - Ada search bar untuk search buku berdasarkan judul atau pengarang.
 - Bisa sort/filter berdasarkan alphabetic, best-seller, top-rated.
