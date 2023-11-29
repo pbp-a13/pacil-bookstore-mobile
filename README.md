@@ -1,5 +1,5 @@
 # Proyek Akhir Semester Kelompok A13 -- pacil-bookstore
-## Website: [http://pacil-bookstore.pbp.cs.ui.ac.id/](http://pacil-bookstore.pbp.cs.ui.ac.id/)
+## Website: pts-a13-o3pdazjyd-not0nlines-projects.vercel.app
 
 ### Link Berita Acara: https://docs.google.com/spreadsheets/d/16WONjLGPqOpak5w6WIo5dhGA5JXVEU15I9eXDtfJNIo/edit?usp=sharing
 
