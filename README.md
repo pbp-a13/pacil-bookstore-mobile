@@ -1,5 +1,5 @@
 # Proyek Akhir Semester Kelompok A13 -- pacil-bookstore
-## Website: [http://pacil-bookstore.pbp.cs.ui.ac.id/](http://pacil-bookstore.pbp.cs.ui.ac.id/)
+## Website: pts-a13-o3pdazjyd-not0nlines-projects.vercel.app
 
 ### Link Berita Acara: https://docs.google.com/spreadsheets/d/16WONjLGPqOpak5w6WIo5dhGA5JXVEU15I9eXDtfJNIo/edit?usp=sharing
 
@@ -49,7 +49,7 @@ Sumber database: https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
 - PJ: William Joel Matthew Quinn Rompis 2206081843
 - Berisi main page (member) dan main page (admin)
 - Menampilkan semua buku yang tersedia di toko buku.
-- Informasi buku yang ditampilkan: gambar buku, judul buku, pengarang buku, harga buku, dan rating buku
+- Informasi buku yang ditampilkan: judul buku, pengarang buku, harga buku, dan rating buku
 - Buku bisa diklik untuk mengalihkan ke book info page
 - Ada search bar untuk search buku berdasarkan judul atau pengarang.
 - Bisa sort/filter berdasarkan alphabetic, best-seller, top-rated.
@@ -153,7 +153,7 @@ Models:
 </h3>
 
 - Menampilkan buku-buku yang tersedia pada toko buku.
-- Informasi buku yang ditampilkan: gambar buku, judul buku, pengarang buku, harga buku, dan rating buku
+- Informasi buku yang ditampilkan: judul buku, pengarang buku, harga buku, dan rating buku
 - Buku bisa diklik untuk mengalihkan ke book info page
 - Ada search bar untuk search buku berdasarkan judul atau pengarang.
 - Bisa sort/filter berdasarkan alphabetic, best-seller, top-rated.
@@ -283,7 +283,7 @@ Models:
    - Dapat melihat informasi tentang buku, termasuk judul, pengarang, harga, dan rating
    - Jika ingin menambahkan buku ke keranjang (cart), user akan diminta untuk login atau melakukan pendaftaran
 2. Member:
-   - Dapat mengakses halaman "Main page (member)" dan fitur-fitur seluruh situs aplikasi mobile
+   - Dapat mengakses halaman "Main page (member)" dan semua fitur aplikasi mobile
    - Bisa melihat dan membeli buku
    - Dapat menambahkan buku ke keranjang (cart) dan melakukan transaksi pembayaran
    - Memiliki saldo yang dapat diisi melalui halaman "Isi Saldo"
