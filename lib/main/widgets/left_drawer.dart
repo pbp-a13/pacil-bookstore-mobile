@@ -5,6 +5,7 @@ import 'package:toko_buku/account/screens/login.dart';
 // import 'package:pacil_inventory/screens/menu.dart';
 // import 'package:pacil_inventory/screens/inventory_list_form.dart';
 import 'package:toko_buku/main/screens/main_page.dart';
+import 'package:toko_buku/order/screens/orderlist.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -54,17 +55,17 @@ class LeftDrawer extends StatelessWidget {
   },
 ),
 
-// ListTile(
-//     leading: const Icon(Icons.shopping_basket),
-//     title: const Text('Daftar Item'),
-//     onTap: () {
-//         // Route menu ke halaman produk
-//         Navigator.push(
-//         context,
-//         MaterialPageRoute(builder: (context) => const ItemPage()),
-//         );
-//     },
-// ),
+ListTile(
+    leading: const Icon(Icons.shopping_basket),
+    title: const Text('Daftar Pesanan'),
+    onTap: () {
+        // Route menu ke halaman produk
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const OrderListPage()),
+        );
+    },
+),
 
 // ListTile(
 //   leading: const Icon(Icons.add_shopping_cart),
