@@ -46,7 +46,7 @@ Widget build(BuildContext context) {
           preferredSize: Size.fromHeight(150.0), 
           child : AppBar(
             toolbarHeight: 150,
-            title: MyRowWidget(),
+            title: MyRowWidget(onSubmit: (String searchText, String radioGroup1, String radioGroup2) {  },),
           ),
         ),
           drawer: const LeftDrawer(),
