@@ -16,40 +16,6 @@ class _CartPageState extends State<CartPage> {
   Future<void> fetchOrders() async {
     // Simulated data - replace with actual logic
     List<Order> orderList = [
-      //Order(
-      //   orderId: '1',
-      //   books: [
-      //     Book(
-      //       model: Model.BOOK_BOOK,
-      //       pk: 1,
-      //       fields: Fields(
-      //         title: 'Book 1',
-      //         price: 20,
-      //       ),
-      //     ),
-      //     Book(
-      //       model: Model.BOOK_BOOK,
-      //       pk: 2,
-      //       fields: Fields(
-      //         title: 'Book 2',
-      //         price: 15,
-      //       ),
-      //     ),
-      //   ],
-      // ),
-      // Order(
-      //   orderId: '2',
-      //   books: [
-      //     Book(
-      //       model: Model.BOOK_BOOK,
-      //       pk: 3,
-      //       fields: Fields(
-      //         title: 'Book 3',
-      //         price: 25,
-      //       ),
-      //     ),
-      //   ],
-      // ),
     ];
 
     setState(() {
