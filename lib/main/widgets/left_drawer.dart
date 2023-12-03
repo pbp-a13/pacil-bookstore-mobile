@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toko_buku/account/screens/login.dart';
+import 'package:toko_buku/cart/cart.dart';
 // import 'package:pacil_inventory/models/item.dart';
 // import 'package:pacil_inventory/screens/list_item.dart';
 // import 'package:pacil_inventory/screens/menu.dart';
@@ -57,12 +58,20 @@ class LeftDrawer extends StatelessWidget {
 
 ListTile(
     leading: const Icon(Icons.shopping_basket),
+<<<<<<< HEAD
+    title: const Text('Daftar Item'),
+=======
     title: const Text('Daftar Pesanan'),
+>>>>>>> 0cdef1bffc1b00ccb696197c26effc402d464cd2
     onTap: () {
         // Route menu ke halaman produk
         Navigator.push(
         context,
+<<<<<<< HEAD
+        MaterialPageRoute(builder: (context) => const CartPage()),
+=======
         MaterialPageRoute(builder: (context) => const OrderListPage()),
+>>>>>>> 0cdef1bffc1b00ccb696197c26effc402d464cd2
         );
     },
 ),
