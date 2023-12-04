@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:toko_buku/account/models/account.dart';
 
 class AccountInformationPage extends StatefulWidget {
   final Account account;
 
-  AccountInformationPage({required this.account});
+  const AccountInformationPage({super.key, required this.account});
 
   @override
   _AccountInformationPageState createState() => _AccountInformationPageState();
@@ -38,18 +41,18 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Account Information'),
+        title: const Text('Account Information'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Account Information',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -58,7 +61,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
               },
               child: Text(isEditing ? 'Cancel' : 'Edit'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             if (isEditing) _buildEditForm() else _buildAccountInfo(),
           ],
         ),
@@ -72,23 +75,23 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
         children: [
           TextFormField(
             controller: namaController,
-            decoration: InputDecoration(labelText: 'Nama'),
+            decoration: const InputDecoration(labelText: 'Nama'),
           ),
           TextFormField(
             controller: emailController,
-            decoration: InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: 'Email'),
           ),
           TextFormField(
             controller: alamatController,
-            decoration: InputDecoration(labelText: 'Alamat'),
+            decoration: const InputDecoration(labelText: 'Alamat'),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               // Implement your logic to update account details
               _updateAccountInfo();
             },
-            child: Text('Submit'),
+            child: const Text('Submit'),
           ),
         ],
       ),
@@ -104,8 +107,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
         Text('Email: ${widget.account.email}'),
         Text('Alamat: ${widget.account.address}'),
         Text('Saldo: ${widget.account.balance}'),
-        SizedBox(height: 20),
-        Text('Buku yang Telah Dibeli:'),
+        const SizedBox(height: 20),
+        const Text('Buku yang Telah Dibeli:'),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -113,9 +116,9 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
               Text('- ${book.title}'), // asumsi true (kayaknya salah)
           ],
         ),
-        SizedBox(height: 20),
-        Text('Reviews:'),
-        Column(
+        const SizedBox(height: 20),
+        const Text('Reviews:'),
+        const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Add logic to display reviews
@@ -125,8 +128,49 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     );
   }
 
-  void _updateAccountInfo() {
-    // Implement your logic to send a POST request to update account details
-    // Use the values from controllers: namaController.text, emailController.text, etc.
+  Future<void> _updateAccountInfo() async {
+    // Retrieve values from controllers
+    String nama = namaController.text;
+    String email = emailController.text;
+    String alamat = alamatController.text;
+
+    // Prepare data for the POST request
+    Map<String, String> data = {
+      'nama': nama,
+      'email': email,
+      'alamat': alamat,
+    };
+
+    // Convert data to JSON
+    String jsonData = jsonEncode(data);
+
+    // Replace the URL with your Django server URL
+    String djangoServerUrl = 'https://pts-a13-not0nlines-projects.vercel.app/';
+    String apiUrl = '$djangoServerUrl/update_account_info/';
+
+    try {
+      // Send the POST request
+      http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonData,
+      );
+
+      // Check the response status
+      if (response.statusCode == 200) {
+        // Success
+        print('Account updated successfully');
+        // You can perform additional actions or navigate to another screen if needed
+      } else {
+        // Handle the error
+        print('Failed to update account: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        // You can show an error message to the user or perform other error handling
+      }
+    } catch (e) {
+      // Handle network or other exceptions
+      print('Exception during account update: $e');
+      // You can show an error message to the user or perform other error handling
+    }
   }
 }

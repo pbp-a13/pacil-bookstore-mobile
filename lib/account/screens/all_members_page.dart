@@ -6,10 +6,12 @@ import 'package:toko_buku/account/screens/spesific_member_page.dart';
 import 'package:toko_buku/book/models.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,18 +19,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MemberListScreen(),
+      home: const MemberListScreen(),
     );
   }
 }
 
 class MemberListScreen extends StatefulWidget {
+  const MemberListScreen({super.key});
+
   @override
   _MemberListScreenState createState() => _MemberListScreenState();
 }
 
 class _MemberListScreenState extends State<MemberListScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<Account> _accounts = [];
 
   @override
@@ -58,67 +62,68 @@ class _MemberListScreenState extends State<MemberListScreen> {
   }
 
   List<Account> _filterAccounts(List<dynamic> members, String query) {
-  return members
-      .where((member) =>
-          member['user']['username'].toLowerCase().contains(query.toLowerCase()) ||
-          member['name'].toLowerCase().contains(query.toLowerCase()))
-      .map((member) => Account(
-            user: User(
-              username: member['user']['username'],
-              password: member['user']['password'],
-              email: member['user']['email'],
-              firstName: member['user']['firstName'],
-              lastName: member['user']['lastName'],
-            ),
-            name: member['name'],
-            email: member['email'],
-            purchasedBooks: List<Book>.from(
-                member['purchasedBooks'].map((x) => Book.fromJson(x))),
-            ongoingPurchase: List<Book>.from(
-                member['ongoingPurchase'].map((x) => Book.fromJson(x))),
-            balance: member['balance'],
-            address: member['address'],
-          ))
-      .toList();
-}
-
+    return members
+        .where((member) =>
+            member['user']['username']
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+            member['name'].toLowerCase().contains(query.toLowerCase()))
+        .map((member) => Account(
+              user: User(
+                username: member['user']['username'],
+                password: member['user']['password'],
+                email: member['user']['email'],
+                firstName: member['user']['firstName'],
+                lastName: member['user']['lastName'],
+              ),
+              name: member['name'],
+              email: member['email'],
+              purchasedBooks: List<Book>.from(
+                  member['purchasedBooks'].map((x) => Book.fromJson(x))),
+              ongoingPurchase: List<Book>.from(
+                  member['ongoingPurchase'].map((x) => Book.fromJson(x))),
+              balance: member['balance'],
+              address: member['address'],
+            ))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View All Members'),
+        title: const Text('View All Members'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'View All Members',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _searchController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Search for members...',
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 ElevatedButton(
                   onPressed: () {
                     _searchMembers(_searchController.text);
                   },
-                  child: Text('Search'),
+                  child: const Text('Search'),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: _accounts.length,
@@ -149,4 +154,3 @@ class _MemberListScreenState extends State<MemberListScreen> {
     );
   }
 }
-
