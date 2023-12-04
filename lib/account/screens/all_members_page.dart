@@ -45,7 +45,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
   Future<void> _searchMembers(String query) async {
     final response = await http.get(
       Uri.parse(
-          'https://pts-a13-o3pdazjyd-not0nlines-projects.vercel.app/get_all_member_info/'),
+          'https://pts-a13-not0nlines-projects.vercel.app/get_all_member_info/'),
     );
 
     if (response.statusCode == 200) {

@@ -15,7 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _register() async {
     final response = await http.post(
       Uri.parse(
-          'https://pts-a13-o3pdazjyd-not0nlines-projects.vercel.app/register_flutter/'), // Replace with your Django server URL
+          'https://pts-a13-not0nlines-projects.vercel.app/register_flutter/'), // Replace with your Django server URL
       body: {
         'username': _usernameController.text,
         'password': _passwordController.text,
