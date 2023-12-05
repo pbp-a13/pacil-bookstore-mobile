@@ -6,14 +6,20 @@ import 'package:toko_buku/main/widgets/search_sort.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class BookInfoPage extends StatefulWidget {
-  const BookInfoPage({Key? key}) : super(key: key);
+class BookInfoPage extends StatelessWidget {
+  BookInfoPage({Key? key}) : super(key: key);
 
-  @override
-  _BookInfoPageState createState() => _BookInfoPageState();
-}
+    final List<FeatureButton> button = [
+      FeatureButton("Edit", Icons.edit, Colors.blue),
+      FeatureButton("Delete", Icons.delete, Colors.red),
+      FeatureButton("Masukkan Keranjang", Icons.add_shopping_cart, Colors.lightBlueAccent),
+    ];
 
-class _BookInfoPageState extends State<BookInfoPage> {
+  // @override
+  // _BookInfoPageState createState() => _BookInfoPageState();
+// }
+
+// class _BookInfoPageState extends State<BookInfoPage> {
   // List<Order> orders = []; // Assume Order model contains purchased book details
 
   // // Function to fetch initial order details (replace with your actual logic)
@@ -234,97 +240,18 @@ class _BookInfoPageState extends State<BookInfoPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 322,
-                                    height: 40,
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: ShapeDecoration(
-                                      color: Color(0xFF0066FF),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Edit',
-                                          style: TextStyle(
-                                            color: Color(0xFFFFFBFF),
-                                            fontSize: 16,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w400,
-                                            height: 0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Container(
-                                    width: 322,
-                                    height: 40,
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: ShapeDecoration(
-                                      color: Color(0xFFFF0000),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Delete',
-                                          style: TextStyle(
-                                            color: Color(0xFFFFFBFF),
-                                            fontSize: 16,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w400,
-                                            height: 0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Container(
-                                    width: 321,
-                                    height: 40,
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: ShapeDecoration(
-                                      color: Color(0xFFFFFBFF),
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(width: 1, color: Color(0xFF0066FF)),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        // Container(
-                                        //   width: 24,
-                                        //   height: 24,
-                                        //   child: Stack(children: [
-                                        //   ,
-                                        //   ]),
-                                        // ),
-                                        // const SizedBox(width: 10),
-                                        Text(
-                                          'Masukkan Keranjang',
-                                          style: TextStyle(
-                                            color: Color(0xFF0066FF),
-                                            fontSize: 16,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w400,
-                                            height: 0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                children: <Widget>[
+                                  GridView.count(
+                                    primary: true,
+                                    padding: const EdgeInsets.all(0),
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 8,
+                                    crossAxisCount: 3,
+                                    shrinkWrap: true,
+                                    children: button.map((FeatureButton button) {
+                                      // Iterasi untuk setiap button
+                                      return DisplayButton(button);
+                                    }).toList(),
                                   ),
                                 ],
                               ),
@@ -669,56 +596,76 @@ class _BookInfoPageState extends State<BookInfoPage> {
                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                                 children: [
-                                                                  // Container(
-                                                                  //   width: 16,
-                                                                  //   height: 16,
-                                                                  //   clipBehavior: Clip.antiAlias,
-                                                                  //   decoration: BoxDecoration(),
-                                                                  //   child: Stack(children: [
-                                                                  //   ,
-                                                                  //   ]),
-                                                                  // ),
-                                                                  // const SizedBox(width: 2),
-                                                                  // Container(
-                                                                  //   width: 16,
-                                                                  //   height: 16,
-                                                                  //   clipBehavior: Clip.antiAlias,
-                                                                  //   decoration: BoxDecoration(),
-                                                                  //   child: Stack(children: [
-                                                                  //   ,
-                                                                  //   ]),
-                                                                  // ),
-                                                                  // const SizedBox(width: 2),
-                                                                  // Container(
-                                                                  //   width: 16,
-                                                                  //   height: 16,
-                                                                  //   clipBehavior: Clip.antiAlias,
-                                                                  //   decoration: BoxDecoration(),
-                                                                  //   child: Stack(children: [
-                                                                  //   ,
-                                                                  //   ]),
-                                                                  // ),
-                                                                  // const SizedBox(width: 2),
-                                                                  // Container(
-                                                                  //   width: 16,
-                                                                  //   height: 16,
-                                                                  //   clipBehavior: Clip.antiAlias,
-                                                                  //   decoration: BoxDecoration(),
-                                                                  //   child: Stack(children: [
-                                                                  //   ,
-                                                                  //   ]),
-                                                                  // ),
-                                                                  // const SizedBox(width: 2),
-                                                                  // Container(
-                                                                  //   width: 16,
-                                                                  //   height: 16,
-                                                                  //   clipBehavior: Clip.antiAlias,
-                                                                  //   decoration: BoxDecoration(),
-                                                                  //   child: Stack(children: [
-                                                                  //   ,
-                                                                  //   ]),
-                                                                  // ),
-                                                                  // const SizedBox(width: 2),
+                                                                  Container(
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    clipBehavior: Clip.antiAlias,
+                                                                    decoration: BoxDecoration(),
+                                                                    child: Stack(children: [ 
+                                                                      Icon(
+                                                                        Icons.star,
+                                                                        color: Colors.black,
+                                                                        size: 16.0,
+                                                                      ),
+                                                                    ]),
+                                                                  ),
+                                                                  const SizedBox(width: 2),
+                                                                  Container(
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    clipBehavior: Clip.antiAlias,
+                                                                    decoration: BoxDecoration(),
+                                                                    child: Stack(children: [ 
+                                                                      Icon(
+                                                                        Icons.star,
+                                                                        color: Colors.black,
+                                                                        size: 16.0,
+                                                                      ),
+                                                                    ]),
+                                                                  ),
+                                                                  const SizedBox(width: 2),
+                                                                  Container(
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    clipBehavior: Clip.antiAlias,
+                                                                    decoration: BoxDecoration(),
+                                                                    child: Stack(children: [ 
+                                                                      Icon(
+                                                                        Icons.star,
+                                                                        color: Colors.black,
+                                                                        size: 16.0,
+                                                                      ),
+                                                                    ]),
+                                                                  ),
+                                                                  const SizedBox(width: 2),
+                                                                  Container(
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    clipBehavior: Clip.antiAlias,
+                                                                    decoration: BoxDecoration(),
+                                                                    child: Stack(children: [ 
+                                                                      Icon(
+                                                                        Icons.star,
+                                                                        color: Colors.black,
+                                                                        size: 16.0,
+                                                                      ),
+                                                                    ]),
+                                                                  ),
+                                                                  const SizedBox(width: 2),
+                                                                  Container(
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    clipBehavior: Clip.antiAlias,
+                                                                    decoration: BoxDecoration(),
+                                                                    child: Stack(children: [ 
+                                                                      Icon(
+                                                                        Icons.star,
+                                                                        color: Colors.black,
+                                                                        size: 16.0,
+                                                                      ),
+                                                                    ]),
+                                                                  ),
+                                                                  const SizedBox(width: 2),
                                                                   Text(
                                                                     '(10)',
                                                                     style: TextStyle(
@@ -950,6 +897,64 @@ class _BookInfoPageState extends State<BookInfoPage> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class FeatureButton {
+  final String name;
+  final IconData icon;
+  final Color color;
+
+  FeatureButton(this.name, this.icon, this.color);
+}
+
+class DisplayButton extends StatelessWidget {
+  final FeatureButton button;
+
+  const DisplayButton(this.button, {super.key}); // Constructor
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: button.color,
+      child: InkWell(
+        // Area responsive terhadap sentuhan
+        onTap: () {
+          // Memunculkan SnackBar ketika diklik
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+                content: Text("Kamu telah menekan tombol ${button.name}!")));
+        },
+        child: Container(
+          // Container untuk menyimpan Icon dan Text
+          padding: const EdgeInsets.all(8),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  button.icon,
+                  color: Colors.white,
+                  size: 20.0,
+                ),
+                const Padding(padding: EdgeInsets.all(3)),
+                Text(
+                  button.name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
