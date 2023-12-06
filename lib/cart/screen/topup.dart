@@ -57,40 +57,32 @@ class _TopUpBalancePageState extends State<TopUpBalancePage> {
   }
 
   void updateBalance(int amount) {
-    // Assume 'account' is the current user's account
-    Account account = getLoggedInUserAccount(); // Replace with actual function
+    Account account = getLoggedInUserAccount(); //ganti
     setState(() {
       account.balance += amount;
     });
-
-    // You may want to update the user's account on the server as well
-    // Call a function to send the updated account information to the server
     sendUpdatedAccountToServer(account);
   }
 
   Account getLoggedInUserAccount() {
-    // Replace this with actual logic to get the logged-in user's account
-    // For simplicity, returning a dummy account for now
-    return Account(
-      user: User(
-        username: 'john_doe',
-        password: 'password',
-        email: 'john.doe@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-      ),
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      purchasedBooks: [],
-      ongoingPurchase: [],
-      balance: 100,
-      address: '123 Main St',
-    );
+    // return Account(
+    //   user: User(
+    //     username: 'john_doe',
+    //     password: 'password',
+    //     email: 'john.doe@example.com',
+    //     firstName: 'John',
+    //     lastName: 'Doe',
+    //   ),
+    //   name: 'John Doe',
+    //   email: 'john.doe@example.com',
+    //   purchasedBooks: [],
+    //   ongoingPurchase: [],
+    //   balance: 100,
+    //   address: '123 Main St',
+    // );
   }
 
   void sendUpdatedAccountToServer(Account account) {
-    // Replace this with actual logic to send the updated account to the server
-    // For simplicity, printing the updated account information for now
     print('Updated Account: ${account.toJson()}');
   }
 }
