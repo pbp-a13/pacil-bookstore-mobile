@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:toko_buku/account/screens/login.dart';
+import 'package:toko_buku/cart/cart.dart';
 // import 'package:pacil_inventory/models/item.dart';
 // import 'package:pacil_inventory/screens/list_item.dart';
 // import 'package:pacil_inventory/screens/menu.dart';
 // import 'package:pacil_inventory/screens/inventory_list_form.dart';
 import 'package:toko_buku/main/screens/main_page.dart';
+import 'package:toko_buku/order/screens/orderlist.dart';
+import 'package:toko_buku/book_info/screens/book_info.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -54,17 +57,17 @@ class LeftDrawer extends StatelessWidget {
   },
 ),
 
-// ListTile(
-//     leading: const Icon(Icons.shopping_basket),
-//     title: const Text('Daftar Item'),
-//     onTap: () {
-//         // Route menu ke halaman produk
-//         Navigator.push(
-//         context,
-//         MaterialPageRoute(builder: (context) => const ItemPage()),
-//         );
-//     },
-// ),
+ListTile(
+    leading: const Icon(Icons.shopping_basket),
+    title: const Text('Daftar Item'),
+    onTap: () {
+        // Route menu ke halaman produk
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CartPage()),
+        );
+    },
+),
 
 // ListTile(
 //   leading: const Icon(Icons.add_shopping_cart),
