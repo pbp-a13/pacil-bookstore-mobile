@@ -19,34 +19,28 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  var value = "*None*";
-  var search_mode = ""; 
-  var sort_mode = "";
+  var value = "";
+  var search_text = ""; 
+  var search_mode = "";
 
 
 
-  Future<List<Book>> fetchItem(value, search_mode, sort_mode) async {
-    print('value: $value');
-    print('search mode: $search_mode');
-    print('sort mode: $sort_mode');
-    var url;
-    if (value != null){
-      value = value.replaceAll(' ', '+');
-    }
-    if (value == '' || value == null){
-      value = "*None*";
-    }
-    if (search_mode == null || search_mode == ''){
-      search_mode = 'title';
-      sort_mode = 'title';
-    }
-    url = Uri.parse('http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode');
+  Future<List<Book>> fetchItem(request, value, search_mode, sort_mode) async {
+    
 
-    print(url);
+    value = value.replaceAll(' ', '+');
 
+    final response = await request.postJson(
+      "http://localhost:8000/json-flutter/",
+      jsonEncode(<String, String>{
+          'value': value.toString(),
+          'search_mode': search_mode.toString(),
+          'sort_mode': sort_mode.toString(),
+          // TODO: Sesuaikan field data sesuai dengan aplikasimu
+      }));
     // if (search_mode == "title"){
     //   if (sort_mode == "title"){
-    //     url = 'http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode';
+
     //   }
     //   else{
 
@@ -60,11 +54,6 @@ class _MainPageState extends State<MainPage> {
         
     //   }
     // }
-
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
 
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -82,7 +71,7 @@ class _MainPageState extends State<MainPage> {
   String radioGroup1 = '';
   String radioGroup2 = '';
 
-  collectStates(String searchText, String radioGroup1, String radioGroup2) {
+  void collectStates(String searchText, String radioGroup1, String radioGroup2) {
     // Do something with the states...
     setState(() {
       this.searchText = searchText;
@@ -90,30 +79,17 @@ class _MainPageState extends State<MainPage> {
       this.radioGroup2 = radioGroup2;
     });
 
-    value = searchText;
-    search_mode = radioGroup1;
-    sort_mode = radioGroup2;
-
     // Print or perform any action with the collected states
     
+
     print('Search Text: $searchText');
     print('Radio Group 1: $radioGroup1');
     print('Radio Group 2: $radioGroup2');
-
-    // fetchItem(searchText, radioGroup1, radioGroup2);
-
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-            // final request = context.watch<CookieRequest>();
-    // var value, search_mode, sort_mode = collectStates(searchText, radioGroup1, radioGroup2);
-    //     print('build value: $value');
-    //     print('build search mode: $search_mode');
-    //     print('build sort mode: $sort_mode');
+            final request = context.watch<CookieRequest>();
 
     return Scaffold(
       appBar: PreferredSize(
@@ -125,7 +101,7 @@ class _MainPageState extends State<MainPage> {
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
-        future: fetchItem(value, search_mode, sort_mode),
+        future: fetchItem(request, "", "title", "title"),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
