@@ -1,47 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:toko_buku/book/models.dart';
 import 'package:toko_buku/book/models.dart';
+import 'package:toko_buku/book_info/screens/edit_form.dart';
 import 'package:toko_buku/main/widgets/left_drawer.dart';
-import 'package:toko_buku/main/widgets/search_sort.dart';
+import 'package:toko_buku/book_info/widgets/review_sort.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class BookInfoPage extends StatelessWidget {
   BookInfoPage({Key? key}) : super(key: key);
 
-    final List<FeatureButton> button = [
-      FeatureButton("Edit", Icons.edit, Colors.blue),
-      FeatureButton("Delete", Icons.delete, Colors.red),
-      FeatureButton("Masukkan Keranjang", Icons.add_shopping_cart, Colors.lightBlueAccent),
-    ];
+  final List<FeatureButton> button = [
+    FeatureButton("Edit", Icons.edit, Colors.blue),
+    FeatureButton("Delete", Icons.delete, Colors.red),
+    FeatureButton("Masukkan Keranjang", Icons.add_shopping_cart, Colors.lightBlueAccent),
+  ];
 
-  // @override
-  // _BookInfoPageState createState() => _BookInfoPageState();
-// }
+  static const String routeName = '/bookInfo';
 
-// class _BookInfoPageState extends State<BookInfoPage> {
-  // List<Order> orders = []; // Assume Order model contains purchased book details
+  // String radioGroup = '';
 
-  // // Function to fetch initial order details (replace with your actual logic)
-  // Future<void> fetchOrders() async {
-  //   // Simulated data - replace with actual logic
-  //   List<Order> orderList = [
-  //   ];
-
+  // void collectStates(String radioGroup) {
   //   setState(() {
-  //     orders = orderList;
+  //     this.radioGroup = radioGroup;
   //   });
-  // }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchOrders();
+  //   // Print or perform any action with the collected states
+  //   print('Radio Group: $radioGroup');
   // }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    // final BookInfoArguments args = ModalRoute.of(context)!.settings.arguments as BookInfoArguments;
+    // String bookId = args.bookId;
+    return ListView(
       children: [
         Container(
           width: 360,
@@ -172,16 +164,20 @@ class BookInfoPage extends StatelessWidget {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              // Container(
-                                              //   width: 15,
-                                              //   height: 15,
-                                              //   clipBehavior: Clip.antiAlias,
-                                              //   decoration: BoxDecoration(),
-                                              //   child: Stack(children: [
-                                              //   ,
-                                              //   ]),
-                                              // ),
-                                              // const SizedBox(width: 4),
+                                              Container(
+                                                width: 15,
+                                                height: 15,
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(),
+                                                child: Stack(children: [
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.black,
+                                                    size: 12.0,
+                                                  ),
+                                                ]),
+                                              ),
+                                              const SizedBox(width: 4),
                                               Text(
                                                 '4.5',
                                                 style: TextStyle(
@@ -790,16 +786,20 @@ class BookInfoPage extends StatelessWidget {
                                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                       children: [
-                                                                        // Container(
-                                                                        //   width: 20,
-                                                                        //   height: 20,
-                                                                        //   clipBehavior: Clip.antiAlias,
-                                                                        //   decoration: BoxDecoration(),
-                                                                        //   child: Stack(children: [
-                                                                        //   ,
-                                                                        //   ]),
-                                                                        // ),
-                                                                        // const SizedBox(width: 4),
+                                                                        Container(
+                                                                          width: 20,
+                                                                          height: 20,
+                                                                          clipBehavior: Clip.antiAlias,
+                                                                          decoration: BoxDecoration(),
+                                                                          child: Stack(children: [
+                                                                            Icon(
+                                                                              Icons.star,
+                                                                              color: Colors.yellowAccent,
+                                                                              size: 16.0,
+                                                                            ),
+                                                                          ]),
+                                                                        ),
+                                                                        const SizedBox(width: 4),
                                                                         SizedBox(
                                                                           width: 15,
                                                                           child: Text(
@@ -919,13 +919,19 @@ class DisplayButton extends StatelessWidget {
     return Material(
       color: button.color,
       child: InkWell(
-        // Area responsive terhadap sentuhan
-        onTap: () {
-          // Memunculkan SnackBar ketika diklik
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-                content: Text("Kamu telah menekan tombol ${button.name}!")));
+        onTap: () async {
+          if (button.name == "Edit") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditFormPage()),
+            );
+          }
+          else if (button.name == "Masukkan Keranjang") {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                  content: Text("Berhasil menambahkan item ke keranjang!")));
+          }
         },
         child: Container(
           // Container untuk menyimpan Icon dan Text
