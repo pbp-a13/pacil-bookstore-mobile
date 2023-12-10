@@ -5,65 +5,42 @@ import 'dart:convert';
 import 'package:toko_buku/book/models.dart';
 import 'package:toko_buku/main/widgets/left_drawer.dart';
 import 'package:toko_buku/main/widgets/search_sort.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
+
+class BookFilterArguments {
+  final String searchBy;
+  final String sortBy;
 
 
-
-
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
-
-  @override
-  _MainPageState createState() => _MainPageState();
+  BookFilterArguments(this.searchBy, this.sortBy);
 }
 
-class _MainPageState extends State<MainPage> {
-  var value = "*None*";
-  var search_mode = ""; 
-  var sort_mode = "";
+
+class MainPageSearch extends StatefulWidget {
+  const MainPageSearch({Key? key}) : super(key: key);
+
+  static const routeName = '/mainFilter';
+
+  @override
+  _MainPageSearchState createState() => _MainPageSearchState();
+}
+
+class _MainPageSearchState extends State<MainPageSearch> {
 
 
 
-  Future<List<Book>> fetchItem(value, search_mode, sort_mode) async {
-    print('value: $value');
-    print('search mode: $search_mode');
-    print('sort mode: $sort_mode');
-    var url;
-    if (value != null){
-      value = value.replaceAll(' ', '+');
-    }
-    if (value == '' || value == null){
-      value = "*None*";
-    }
-    if (search_mode == null || search_mode == ''){
-      search_mode = 'title';
-      sort_mode = 'title';
-    }
-    url = Uri.parse('http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode');
 
-    print(url);
+  Future<List<Book>> fetchItem() async {
 
-    // if (search_mode == "title"){
-    //   if (sort_mode == "title"){
-    //     url = 'http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode';
-    //   }
-    //   else{
+    
 
-    //   }
-    // }
-    // else{
-    //   if (sort_mode == "title"){
-
-    //   }
-    //   else{
-        
-    //   }
-    // }
-
+    final args = ModalRoute.of(context)!.settings.arguments as BookFilterArguments;
+    // ATTN: Ganti URL sesuai kebutuhan
+    var urlString = 'http://localhost:8000/json/${args.searchBy}/${args.sortBy}';
+    var url = Uri.parse(
+        urlString);
     var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
+        url,
+        headers: {"Content-Type": "application/json"},
     );
 
     var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -78,11 +55,11 @@ class _MainPageState extends State<MainPage> {
   }
 
 
-  String searchText = '';
-  String radioGroup1 = '';
-  String radioGroup2 = '';
+    String searchText = '';
+    String radioGroup1 = '';
+    String radioGroup2 = '';
 
-  collectStates(String searchText, String radioGroup1, String radioGroup2) {
+    void collectStates(String searchText, String radioGroup1, String radioGroup2) {
     // Do something with the states...
     setState(() {
       this.searchText = searchText;
@@ -90,42 +67,25 @@ class _MainPageState extends State<MainPage> {
       this.radioGroup2 = radioGroup2;
     });
 
-    value = searchText;
-    search_mode = radioGroup1;
-    sort_mode = radioGroup2;
-
     // Print or perform any action with the collected states
-    
     print('Search Text: $searchText');
     print('Radio Group 1: $radioGroup1');
     print('Radio Group 2: $radioGroup2');
-
-    // fetchItem(searchText, radioGroup1, radioGroup2);
-
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-            // final request = context.watch<CookieRequest>();
-    // var value, search_mode, sort_mode = collectStates(searchText, radioGroup1, radioGroup2);
-    //     print('build value: $value');
-    //     print('build search mode: $search_mode');
-    //     print('build sort mode: $sort_mode');
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(150.0),
         child: AppBar(
           toolbarHeight: 150,
-          title: MyRowWidget(onSubmit: collectStates),
+          title: MyRowWidget(onSubmit: collectStates,),
         ),
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
-        future: fetchItem(value, search_mode, sort_mode),
+        future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
