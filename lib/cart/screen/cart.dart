@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:toko_buku/book/models.dart';
 import 'package:http/http.dart' as http;
+import 'package:toko_buku/cart/models/cart_models.dart';
+import 'package:toko_buku/cart/screen/payment.dart';
 import 'package:toko_buku/cart/screen/topup.dart';
 import 'package:toko_buku/order/screens/orderlist.dart';
 
@@ -12,41 +16,24 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  List<Order> orders = [];
-  double userBalance = 100.0; // ganti
+  List<CartModels> orders = [];
+  double userBalance = 100.0;
+  double totalAmount = 0.0;
 
-  //
-  Future<void> fetchOrders() async {
-    // ganti
-    List<Order> orderList = [
-      // Order(
-      //   orderId: '1',
-      //   books: [
-      //     Book(
-      //       model: Model.BOOK_BOOK,
-      //       pk: 1,
-      //       fields: Fields(
-      //         title: 'Book 1',
-      //         price: 20,
-      //       ),
-      //       quantity: 2,
-      //     ),
-      //     Book(
-      //       model: Model.BOOK_BOOK,
-      //       pk: 2,
-      //       fields: Fields(
-      //         title: 'Book 2',
-      //         price: 15,
-      //       ),
-      //       quantity: 1,
-      //     ),
-      //   ],
-      // ),
-    ];
+  Future<List<CartModels>> fetchOrders() async {
+    final response = await http.get('http://localhost:8000/book-info/get-cart/' as Uri);
 
-    setState(() {
-      orders = orderList;
-    });
+      // melakukan decode response menjadi bentuk json
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+    // melakukan konversi data json menjadi object Product
+    List<CartModels> list_product = [];
+    for (var d in data) {
+        if (d != null) {
+            list_product.add(CartModels.fromJson(d));
+        }
+    }
+    return list_product;
   }
 
   @override
@@ -67,30 +54,23 @@ class _CartPageState extends State<CartPage> {
             )
           : ListView.builder(
               itemCount: orders.length,
-              itemBuilder: (context, index) {
+              itemBuilder: (context, orderIndex) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  // Display
-                  Text(
-                    'Order ID: ${orders[orderIndex].orderId}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: orders[orderIndex].books.length,
-                    itemBuilder: (context, bookIndex) {
-                      Book book = orders[orderIndex].books[bookIndex];
-                      return ListTile(
-                        title: Text(book.fields.title),
-                        subtitle: Text('Price: \$${book.fields.price} | Quantity: ${book.quantity}'),
-                      );
-                    },
-                  ),
-                  Divider(),
-                  // ... (Other order-related details)
-
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: orders[orderIndex].books.length,
+                      itemBuilder: (context, bookIndex) {
+                        Book book = orders[orderIndex].books[bookIndex];
+                        return ListTile(
+                          title: Text(book.fields.title),
+                          subtitle: Text('Price: \$${book.fields.price} | Quantity: ${book.quantity}'),
+                        );
+                      },
+                    ),
+                    Divider(),
                   ],
                 );
               },
@@ -101,18 +81,18 @@ class _CartPageState extends State<CartPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => OrderListPage(orders: orders),
+                builder: (context) => PaymentPage(totalAmount: totalAmount)
               ),
             );
-          } else {
-            // If balance is insufficient, navigate to TopUpBalancePage
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TopUpBalancePage(),
-              ),
-            );
-          }
+          } 
+          // else {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => TopUpBalancePage(),
+          //     ),
+          //   );
+          // }
         },
         child: Icon(Icons.payment),
       ),
@@ -126,7 +106,7 @@ class _CartPageState extends State<CartPage> {
 
   double calculateTotalAmount() {
     double total = 0;
-    for (Order order in orders) {
+    for (CartModels order in orders) {
       for (Book book in order.books) {
         total += (book.fields.price * book.quantity);
       }
