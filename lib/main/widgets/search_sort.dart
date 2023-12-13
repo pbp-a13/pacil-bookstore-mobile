@@ -10,6 +10,7 @@ class MyRowWidget extends StatefulWidget {
   final SubmitCallback onSubmit;
 
   MyRowWidget({required this.onSubmit});
+  
 
   @override
   _MyRowWidgetState createState() => _MyRowWidgetState();
@@ -85,7 +86,7 @@ class _MyRowWidgetState extends State<MyRowWidget> {
                         Row(
                           children: [
                             Radio(
-                              value: 'author',
+                              value: 'authors',
                               groupValue: _selectedRadioValue1,
                               onChanged: (value) {
                                 setState(() {
@@ -120,7 +121,7 @@ class _MyRowWidgetState extends State<MyRowWidget> {
                         Row(
                           children: [
                             Radio(
-                              value: 'author',
+                              value: 'authors',
                               groupValue: _selectedRadioValue2,
                               onChanged: (value) {
                                 setState(() {
