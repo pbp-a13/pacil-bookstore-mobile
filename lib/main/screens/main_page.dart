@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:toko_buku/book/models.dart';
+import 'package:toko_buku/book_info/screens/book_info.dart';
 import 'package:toko_buku/main/widgets/left_drawer.dart';
 import 'package:toko_buku/main/widgets/search_sort.dart';
 
@@ -101,13 +102,13 @@ class _MainPageState extends State<MainPage> {
                     itemBuilder: (_, index) => GestureDetector(
                       onTap: () {
                         // Handle the card tap, e.g., navigate to detail page
-                        // Navigator.pushNamed(
-                        //   context,
-                        //   ItemDetailPage.routeName,
-                        //   arguments: ItemDetailArguments(
-                        //     "${snapshot.data![index].pk}"
-                        //   ),
-                        // );
+                        Navigator.pushNamed(
+                          context,
+                          BookInfoPage.routeName,
+                          arguments: BookInfoArguments(
+                            bookId: "${snapshot.data![index].pk}"
+                          ),
+                        );
                       },
                       child: Card(
                         margin: const EdgeInsets.symmetric(

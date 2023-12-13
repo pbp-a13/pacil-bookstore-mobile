@@ -57,17 +57,17 @@ class LeftDrawer extends StatelessWidget {
   },
 ),
 
-ListTile(
-    leading: const Icon(Icons.shopping_basket),
-    title: const Text('Daftar Item'),
-    onTap: () {
-        // Route menu ke halaman produk
-        Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const CartPage()),
-        );
-    },
-),
+// ListTile(
+//     leading: const Icon(Icons.shopping_basket),
+//     title: const Text('Daftar Item'),
+//     onTap: () {
+//         // Route menu ke halaman produk
+//         Navigator.push(
+//         context,
+//         MaterialPageRoute(builder: (context) => const CartPage()),
+//         );
+//     },
+// ),
 
 // ListTile(
 //   leading: const Icon(Icons.add_shopping_cart),
@@ -81,6 +81,21 @@ ListTile(
 //         ));
 //   },
 // ),
+
+// buat ngetest aja
+ListTile(
+  leading: const Icon(Icons.read_more),
+  title: const Text('Book Info'),
+  onTap: () {
+    Navigator.pushNamed(
+      context,
+      BookInfoPage.routeName,
+      arguments: BookInfoArguments(
+        bookId: "62" // dummy
+      ),
+    );
+  },
+),
 
 ListTile(
   leading: const Icon(Icons.add_shopping_cart),
