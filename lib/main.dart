@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
         return request;
       },
       child : MaterialApp(
-        routes: {},
+        routes: {
+          '/mainPage': (context) => MainPage(),
+        },
       title: 'Pacil Inventory',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
