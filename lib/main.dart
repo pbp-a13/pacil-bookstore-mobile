@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:pacil_inventory/screens/menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_buku/book_info/screens/book_info.dart';
 import 'package:toko_buku/main/screens/main_page.dart';
 
 void main() {
@@ -22,9 +23,10 @@ class MyApp extends StatelessWidget {
         return request;
       },
       child : MaterialApp(
-        routes: {
+      routes: {
           '/mainPage': (context) => MainPage(),
-        },
+      '/bookInfo': (context) => BookInfoPage(),
+      },
       title: 'Pacil Inventory',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
