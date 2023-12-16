@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:toko_buku/main.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:toko_buku/book_info/screens/edit_form.dart';
@@ -41,6 +42,7 @@ class _ProductPageState extends State<BookInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     final BookInfoArguments args =
       ModalRoute.of(context)!.settings.arguments as BookInfoArguments;
     String bookId = args.bookId;    
@@ -396,7 +398,7 @@ class _ProductPageState extends State<BookInfoPage> {
                     Container(
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 221, 203, 149),
+                        color: Color.fromARGB(255, 221, 183, 71),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text("Low to High", style: TextStyle(fontSize: 12, color: Colors.white , fontWeight: FontWeight.w400),),
