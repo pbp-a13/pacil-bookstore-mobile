@@ -32,7 +32,7 @@ class _EditFormPageState extends State<EditFormPage> {
   }
 
   Future<Book> fetchItem(String bookId) async {
-    var url = Uri.parse('http://localhost:8000/json/$bookId/');
+    var url = Uri.parse('http://localhost:8000/json/${bookId}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -55,6 +55,7 @@ class _EditFormPageState extends State<EditFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Book'),

@@ -156,7 +156,7 @@ class _MainPageState extends State<MainPage> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (_, index) => GestureDetector(
                       onTap: () {
-                        // Handle the card tap, e.g., navigate to detail page
+                        // Handle the card tap, e.g., navigate to detail pageb
                         Navigator.pushNamed(
                           context,
                           BookInfoPage.routeName,
