@@ -449,7 +449,7 @@ class _ProductPageState extends State<BookInfoPage> {
                               children: [
                                 Icon(Icons.star, color: Colors.yellow, size: 20,),
                                 SizedBox(height: 10),
-                                Text("4", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w700)),
+                                Text("5", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w700)),
                               ],
                             ),
                           ),
