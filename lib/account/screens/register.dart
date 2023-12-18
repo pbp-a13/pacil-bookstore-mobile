@@ -15,7 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _register() async {
     final response = await http.post(
       Uri.parse(
-          'https://pts-a13-not0nlines-projects.vercel.app/register_flutter/'), // Replace with your Django server URL
+          'http://localhost:8000/account/register_flutter/'), // Replace with your Django server URL
       body: {
         'username': _usernameController.text,
         'password': _passwordController.text,
@@ -68,25 +68,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Registration Page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const RegisterPage(),
     );
   }
 }

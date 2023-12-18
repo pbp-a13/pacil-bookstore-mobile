@@ -3,65 +3,33 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:toko_buku/book/models.dart';
-import 'package:toko_buku/book_info/screens/book_info.dart';
 import 'package:toko_buku/main/widgets/left_drawer.dart';
 import 'package:toko_buku/main/widgets/search_sort.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 
+class BookFilterArguments {
+  final String searchBy;
+  final String sortBy;
 
-
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
-
-  static const routeName = '/mainPage';
-
-  @override
-  _MainPageState createState() => _MainPageState();
+  BookFilterArguments(this.searchBy, this.sortBy);
 }
 
-class _MainPageState extends State<MainPage> {
-  var value = "*None*";
-  var search_mode = ""; 
-  var sort_mode = "";
+class MainPageSearch extends StatefulWidget {
+  const MainPageSearch({Key? key}) : super(key: key);
 
+  static const routeName = '/mainFilter';
 
+  @override
+  _MainPageSearchState createState() => _MainPageSearchState();
+}
 
-
-
-  Future<List<Book>> fetchItem(value, search_mode, sort_mode) async {
-    var url;
-    if (value != null){
-      value = value.replaceAll(' ', '+');
-    }
-    if (value == '' || value == null){
-      value = "*None*";
-    }
-    if (search_mode == null || search_mode == ''){
-      search_mode = 'title';
-      sort_mode = 'title';
-    }
-    url = Uri.parse('http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode');
-
-    print(url);
-
-    // if (search_mode == "title"){
-    //   if (sort_mode == "title"){
-    //     url = 'http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode';
-    //   }
-    //   else{
-
-    //   }
-    // }
-    // else{
-    //   if (sort_mode == "title"){
-
-    //   }
-    //   else{
-        
-    //   }
-    // }
-
+class _MainPageSearchState extends State<MainPageSearch> {
+  Future<List<Book>> fetchItem() async {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as BookFilterArguments;
+    // ATTN: Ganti URL sesuai kebutuhan
+    var urlString =
+        'http://localhost:8000/json/${args.searchBy}/${args.sortBy}';
+    var url = Uri.parse(urlString);
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -78,12 +46,12 @@ class _MainPageState extends State<MainPage> {
     return listItem;
   }
 
-
   String searchText = '';
   String radioGroup1 = '';
   String radioGroup2 = '';
 
-  collectStates(String searchText, String radioGroup1, String radioGroup2) {
+  void collectStates(
+      String searchText, String radioGroup1, String radioGroup2) {
     // Do something with the states...
     setState(() {
       this.searchText = searchText;
@@ -91,58 +59,27 @@ class _MainPageState extends State<MainPage> {
       this.radioGroup2 = radioGroup2;
     });
 
-    value = searchText;
-    search_mode = radioGroup1;
-    sort_mode = radioGroup2;
-
     // Print or perform any action with the collected states
-    
-
-    // fetchItem(searchText, radioGroup1, radioGroup2);
-
-
-
-
+    print('Search Text: $searchText');
+    print('Radio Group 1: $radioGroup1');
+    print('Radio Group 2: $radioGroup2');
   }
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
-    print(request.jsonData);
-            // final request = context.watch<CookieRequest>();
-    // var value, search_mode, sort_mode = collectStates(searchText, radioGroup1, radioGroup2);
-    //     print('build value: $value');
-    //     print('build search mode: $search_mode');
-    //     print('build sort mode: $sort_mode');
-
-    var isLoggedIn;
-    var isAdmin;
-    var isAdminMode;
-    var cookieData = request.jsonData;
-    if (cookieData.length == 0){
-      isLoggedIn = false;
-      isAdmin = false;
-      isAdminMode = false;
-    }
-    else{
-      isLoggedIn = true;
-      isAdmin = cookieData['is_admin'];
-      isAdminMode = cookieData['is_admin_mode'];
-    }
-
-
-
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(150.0),
+        preferredSize: Size.fromHeight(150.0),
         child: AppBar(
           toolbarHeight: 150,
-          title: MyRowWidget(onSubmit: collectStates),
+          title: MyRowWidget(
+            onSubmit: collectStates,
+          ),
         ),
       ),
-      drawer: LeftDrawer(isLoggedIn: isLoggedIn, isAdmin: isAdmin, isAdminMode: isAdminMode),
+      // drawer: const LeftDrawer(),
       body: FutureBuilder(
-        future: fetchItem(value, search_mode, sort_mode),
+        future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
@@ -160,19 +97,9 @@ class _MainPageState extends State<MainPage> {
             } else {
               return LayoutBuilder(
                 builder: (context, constraints) {
-                  const double cardWidth = 200.0; // Adjust as needed
+                  final double cardWidth = 200.0; // Adjust as needed
                   final int crossAxisCount =
                       (constraints.maxWidth / cardWidth).floor();
-                  var cardColor = Colors.white70;
-                  //TODO: Handle Jika berbagai role
-                  if (isLoggedIn){
-                    if (isAdmin){
-                      if (isAdminMode){
-                      cardColor = Colors.yellow;
-                      }
-                      else{}
-                    }
-                  }
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
@@ -183,23 +110,21 @@ class _MainPageState extends State<MainPage> {
                     itemBuilder: (_, index) => GestureDetector(
                       onTap: () {
                         // Handle the card tap, e.g., navigate to detail page
-                        Navigator.pushNamed(
-                          context,
-                          BookInfoPage.routeName,
-                          arguments: BookInfoArguments(
-                            bookId: "${snapshot.data![index].pk}"
-                          ),
-                        );
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   ItemDetailPage.routeName,
+                        //   arguments: ItemDetailArguments(
+                        //     "${snapshot.data![index].pk}"
+                        //   ),
+                        // );
                       },
                       child: Card(
-                        color: cardColor,
                         margin: const EdgeInsets.symmetric(
                           horizontal: 5,
                           vertical: 5,
-                          
                         ),
                         child: Container(
-                          constraints: const BoxConstraints(
+                          constraints: BoxConstraints(
                             maxWidth: cardWidth,
                           ),
                           child: Padding(
@@ -226,16 +151,16 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
-                                  ),
+                                ),
                                 const SizedBox(height: 10),
-                                  Text(
-                                    "${snapshot.data![index].fields.price}",
-                                    style: const TextStyle(
-                                      fontSize: 9,
-                                    ),
-                                    softWrap: true,
-                                    overflow: TextOverflow.ellipsis,
+                                Text(
+                                  "${snapshot.data![index].fields.price}",
+                                  style: const TextStyle(
+                                    fontSize: 9,
                                   ),
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),

@@ -1,4 +1,6 @@
 // import 'package:pacil_inventory/screens/menu.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -79,9 +81,12 @@ class _LoginPageState extends State<LoginPage> {
                 if (request.loggedIn) {
                   String message = response['message'];
                   String uname = response['username'];
-                  Navigator.pushReplacement(
+                  if (response['is_admin'] == false) {
+                    response['is_admin_mode'] = false;
+                  }
+                  Navigator.pushReplacementNamed(
                     context,
-                    MaterialPageRoute(builder: (context) => const MainPage()),
+                    MainPage.routeName,
                   );
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()

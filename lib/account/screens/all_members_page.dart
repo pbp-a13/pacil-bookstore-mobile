@@ -1,91 +1,64 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:toko_buku/account/models/account.dart';
 import 'package:toko_buku/account/screens/spesific_member_page.dart';
-import 'package:toko_buku/book/models.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'View All Members',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MemberListScreen(),
-    );
-  }
-}
 
 class MemberListScreen extends StatefulWidget {
-  const MemberListScreen({super.key});
+  const MemberListScreen({Key? key, required this.cookieRequest})
+      : super(key: key);
+  final CookieRequest cookieRequest;
 
   @override
-  _MemberListScreenState createState() => _MemberListScreenState();
+  _MemberListScreenState createState() => _MemberListScreenState(cookieRequest);
 }
 
 class _MemberListScreenState extends State<MemberListScreen> {
+  final CookieRequest cookieRequest;
+  _MemberListScreenState(this.cookieRequest);
+
   final TextEditingController _searchController = TextEditingController();
   List<Account> _accounts = [];
+  List<Account> _displayAccounts = [];
 
   @override
   void initState() {
     super.initState();
-    // Fetch initial data when the screen loads
-    _searchMembers('');
+    _fetchMembers(cookieRequest);
   }
 
-  Future<void> _searchMembers(String query) async {
-    final response = await http.get(
-      Uri.parse(
-          'https://pts-a13-not0nlines-projects.vercel.app/get_all_member_info/'),
+  Future<void> _fetchMembers(CookieRequest request) async {
+    final data = await request.get(
+      'http://localhost:8000/auth/get_all_members/',
     );
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+    List<Account> accounts = (data['members'] as List)
+        .map((member) => Account.fromJson(member))
+        .toList();
 
-      List<Account> searchData = _filterAccounts(data['members'], query);
-
-      setState(() {
-        _accounts = searchData;
-      });
-    } else {
-      print('Failed to load members');
-    }
+    setState(() {
+      _accounts = accounts;
+      _displayAccounts = accounts;
+    });
   }
 
-  List<Account> _filterAccounts(List<dynamic> members, String query) {
-    return members
-        .where((member) =>
-            member['user']['username']
-                .toLowerCase()
-                .contains(query.toLowerCase()) ||
-            member['name'].toLowerCase().contains(query.toLowerCase()))
-        .map((member) => Account(
-              user: User(
-                username: member['user']['username'],
-                password: member['user']['password'],
-                email: member['user']['email'],
-                firstName: member['user']['firstName'],
-                lastName: member['user']['lastName'],
-              ),
-              name: member['name'],
-              email: member['email'],
-              purchasedBooks: List<Book>.from(
-                  member['purchasedBooks'].map((x) => Book.fromJson(x))),
-              ongoingPurchase: List<Book>.from(
-                  member['ongoingPurchase'].map((x) => Book.fromJson(x))),
-              balance: member['balance'],
-              address: member['address'],
-            ))
-        .toList();
+  void _searchMembers(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _displayAccounts = _accounts;
+      });
+      return;
+    }
+
+    final searchResults = _accounts.where((account) {
+      return account.user.username.contains(query) ||
+          account.name.contains(query);
+    }).toList();
+
+    setState(() {
+      _displayAccounts = searchResults;
+    });
   }
 
   @override
@@ -112,44 +85,37 @@ class _MemberListScreenState extends State<MemberListScreen> {
                     decoration: const InputDecoration(
                       hintText: 'Search for members...',
                     ),
+                    onChanged: _searchMembers,
                   ),
-                ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    _searchMembers(_searchController.text);
-                  },
-                  child: const Text('Search'),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
-                itemCount: _accounts.length,
+                itemCount: _displayAccounts.length,
                 itemBuilder: (context, index) {
-                  Account account = _accounts[index];
+                  Account account = _displayAccounts[index];
                   return ListTile(
-                    title: Text(account.user.username),
-                    subtitle: Text(account.name),
-                    onTap: () {
-                      _navigateToAccountDetails(account);
-                    },
+                    leading: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MemberDetailsPage(account: account),
+                          ),
+                        );
+                      },
+                      child: const Text('Info'),
+                    ),
+                    title: Text('${account.user.username} - ${account.name}'),
                   );
                 },
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _navigateToAccountDetails(Account account) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MemberDetailsPage(account: account),
       ),
     );
   }

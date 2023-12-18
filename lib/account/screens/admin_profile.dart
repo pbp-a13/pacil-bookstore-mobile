@@ -1,39 +1,50 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:toko_buku/account/models/account.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
-// Account tar diganti ama admin
 class AdminAccountInformationPage extends StatefulWidget {
-  final Account admin;
-
-  const AdminAccountInformationPage({super.key, required this.admin});
+  const AdminAccountInformationPage({Key? key, required this.cookieRequest})
+      : super(key: key);
+  final CookieRequest cookieRequest;
 
   @override
   _AdminAccountInformationPageState createState() =>
-      _AdminAccountInformationPageState();
+      _AdminAccountInformationPageState(cookieRequest);
 }
 
 class _AdminAccountInformationPageState
     extends State<AdminAccountInformationPage> {
+  final CookieRequest cookieRequest;
+
+  _AdminAccountInformationPageState(this.cookieRequest);
+
   bool isEditing = false;
+  late String username;
   late TextEditingController namaController;
   late TextEditingController emailController;
   late TextEditingController alamatController;
+  late int orders_completed;
 
   @override
   void initState() {
     super.initState();
-    // Initialize controllers
+    username = '';
+    orders_completed = 0;
     namaController = TextEditingController();
     emailController = TextEditingController();
     alamatController = TextEditingController();
+
+    _fetchAccountInfo(cookieRequest).then((accountInfo) {
+      username = accountInfo[3];
+      namaController.text = accountInfo[0] ?? '';
+      emailController.text = accountInfo[1] ?? '';
+      alamatController.text = accountInfo[2] ?? '';
+      orders_completed = accountInfo[4];
+    });
   }
 
   @override
   void dispose() {
-    // Dispose controllers when the widget is disposed
     namaController.dispose();
     emailController.dispose();
     alamatController.dispose();
@@ -65,7 +76,16 @@ class _AdminAccountInformationPageState
               child: Text(isEditing ? 'Cancel' : 'Edit'),
             ),
             const SizedBox(height: 20),
-            if (isEditing) _buildEditForm() else _buildAccountInfo(),
+            if (isEditing)
+              _buildEditForm()
+            else
+              FutureBuilder<Widget>(
+                future: _buildAccountInfo(cookieRequest),
+                builder:
+                    (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                  return snapshot.data ?? CircularProgressIndicator();
+                },
+              )
           ],
         ),
       ),
@@ -91,8 +111,10 @@ class _AdminAccountInformationPageState
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              // Implement your logic to update account details
-              _updateAccountInfo();
+              _updateAccountInfo(cookieRequest);
+              setState(() {
+                isEditing = false;
+              });
             },
             child: const Text('Submit'),
           ),
@@ -101,66 +123,80 @@ class _AdminAccountInformationPageState
     );
   }
 
-  Widget _buildAccountInfo() {
-    // Replace with your logic to fetch and display admin details
+  Future<Widget> _buildAccountInfo(CookieRequest request) async {
+    String djangoServerUrl = 'http://localhost:8000';
+    String apiUrl = '$djangoServerUrl/auth/get_account';
+    final List<dynamic> listtt = [];
+
+    try {
+      final response = await request.get(apiUrl);
+
+      response.forEach((key, value) {
+        listtt.add(value);
+      });
+    } catch (e) {
+      print('Exception during account fetch: $e');
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Username: ${widget.admin.user.username}'),
-        Text('Nama: ${widget.admin.name}'),
-        Text('Email: ${widget.admin.email}'),
-        Text('Alamat: ${widget.admin.address}'),
-        const SizedBox(height: 20),
-        // masih perlu admin
-        // Text('No. of Books Added: ${widget.admin.booksAdded}'),
-        // Text('No. of Orders Completed: ${widget.admin.ordersCompleted}'),
+        Text('Username: ${listtt[3]}'),
+        Text('Nama: ${listtt[0]}'),
+        Text('Email: ${listtt[1]}'),
+        Text('Alamat: ${listtt[2]}'),
+        Text('Orders Completed: ${listtt[4]}'),
       ],
     );
   }
 
-  Future<void> _updateAccountInfo() async {
-    // Retrieve values from controllers
+  Future<List<dynamic>> _fetchAccountInfo(CookieRequest request) async {
+    String djangoServerUrl = 'http://localhost:8000';
+    String apiUrl = '$djangoServerUrl/auth/get_account';
+    final List<dynamic> listtt = [];
+
+    try {
+      final response = await request.get(apiUrl);
+
+      response.forEach((key, value) {
+        listtt.add(value);
+      });
+
+      return listtt;
+    } catch (e) {
+      print('Exception during account fetch: $e');
+      return [];
+    }
+  }
+
+  Future<void> _updateAccountInfo(CookieRequest request) async {
     String nama = namaController.text;
     String email = emailController.text;
     String alamat = alamatController.text;
 
-    // Prepare data for the POST request
     Map<String, String> data = {
       'nama': nama,
       'email': email,
       'alamat': alamat,
     };
 
-    // Convert data to JSON
     String jsonData = jsonEncode(data);
 
-    // Replace the URL with your Django server URL
-    String djangoServerUrl = 'https://pts-a13-not0nlines-projects.vercel.app/';
-    String apiUrl = '$djangoServerUrl/update_account_info/';
-
     try {
-      // Send the POST request
-      http.Response response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonData,
-      );
+      final response = await request.postJson(
+          'http://localhost:8000/auth/update_account', jsonData);
+      // final response = await http.post(
+      //   Uri.parse(apiUrl),
+      //   headers: {'Content-Type': 'application/json'},
+      //   body: jsonData,
+      // );
 
-      // Check the response status
       if (response.statusCode == 200) {
-        // Success
         print('Account updated successfully');
-        // You can perform additional actions or navigate to another screen if needed
-      } else {
-        // Handle the error
         print('Failed to update account: ${response.statusCode}');
         print('Response body: ${response.body}');
-        // You can show an error message to the user or perform other error handling
       }
     } catch (e) {
-      // Handle network or other exceptions
       print('Exception during account update: $e');
-      // You can show an error message to the user or perform other error handling
     }
   }
 }
