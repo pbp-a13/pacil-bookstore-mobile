@@ -10,30 +10,35 @@ List<CartModels> cartModelsFromJson(String str) => List<CartModels>.from(json.de
 String cartModelsToJson(List<CartModels> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CartModels {
-    String model;
-    int pk;
-    Fields fields;
+  String model;
+  int pk;
+  Fields fields;
+  List<Book> books; // Add this line
 
-    CartModels({
-        required this.model,
-        required this.pk,
-        required this.fields,
-    });
+  CartModels({
+    required this.model,
+    required this.pk,
+    required this.fields,
+    required this.books, // Add this line
+  });
 
-    factory CartModels.fromJson(Map<String, dynamic> json) => CartModels(
+  factory CartModels.fromJson(Map<String, dynamic> json) => CartModels(
         model: json["model"],
         pk: json["pk"],
         fields: Fields.fromJson(json["fields"]),
-    );
+        books: (json["fields"]["books"] as List<dynamic>)
+            .map((bookJson) => Book.fromJson(bookJson))
+            .toList(), // Assuming the key for books is "books"
+      );
 
-  get books => null;
-
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "model": model,
         "pk": pk,
         "fields": fields.toJson(),
-    };
+        "books": books.map((book) => book.toJson()).toList(), // Add this line
+      };
 }
+
 
 class Fields {
     int user;
@@ -54,6 +59,7 @@ class Fields {
         amount: json["amount"],
         totalAmount: json["total_amount"],
     );
+
 
     Map<String, dynamic> toJson() => {
         "user": user,

@@ -71,33 +71,38 @@ class _CartPageState extends State<CartPage> {
           ? Center(
               child: Text('Your cart is empty.'),
             )
-          : ListView.builder(
-              itemCount: orders.length,
-              itemBuilder: (context, orderIndex) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Add Card for each book in the order
-                    ...orders[orderIndex].books.map((Book book) {
-                      return Card(
-                        elevation: 4,
-                        margin: EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
-                        ),
-                        child: ListTile(
-                          title: Text(book.fields.title),
-                          subtitle: Text(
-                              'Price: \$${book.fields.price} | Quantity: ${book.quantity}'),
-                        ),
-                      );
-                    }).toList(),
-
-                    Divider(),
-                  ],
+            : ListView.builder(
+        itemCount: orders.length,
+        itemBuilder: (context, orderIndex) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Add Card for each book in the order
+              ...orders[orderIndex].books.map((Book book) {
+                return Card(
+                  elevation: 4,
+                  margin: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
+                  ),
+                  child: ListTile( 
+                    title: Text(book.fields.title),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Author: ${book.fields.authors}'),
+                        Text('Price: \$${book.fields.price}'),
+                        Text('Quantity: ${book.quantity}'),
+                      ],
+                    ),
+                  ),
                 );
-              },
-            ),
+              }).toList(),
+              Divider(),
+            ],
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (checkBalance()) {

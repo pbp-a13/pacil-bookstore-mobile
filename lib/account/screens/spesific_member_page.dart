@@ -4,25 +4,25 @@ import 'package:toko_buku/account/models/account.dart';
 class MemberDetailsPage extends StatelessWidget {
   final Account account;
 
-  MemberDetailsPage({required this.account});
+  const MemberDetailsPage({super.key, required this.account});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Member Details'),
+        title: const Text('Member Details'),
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFFF8F9FA),
+          color: const Color(0xFFF8F9FA),
           borderRadius: BorderRadius.circular(5.0),
         ),
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Container(
-            constraints: BoxConstraints(maxWidth: 500.0),
-            margin: EdgeInsets.all(30.0),
-            padding: EdgeInsets.all(30.0),
+            constraints: const BoxConstraints(maxWidth: 500.0),
+            margin: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(30.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
               boxShadow: [
@@ -30,33 +30,33 @@ class MemberDetailsPage extends StatelessWidget {
                   color: Colors.black.withOpacity(0.1),
                   spreadRadius: 0,
                   blurRadius: 10,
-                  offset: Offset(0, 0),
+                  offset: const Offset(0, 0),
                 ),
               ],
               color: Colors.white,
             ),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'Member Details',
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
                 _buildDetailItem('Username', account.user.username),
                 _buildDetailItem('Nama', account.name),
                 _buildDetailItem('Email', account.email),
                 _buildDetailItem('Alamat', account.address),
                 _buildDetailItem('Saldo', account.balance.toString()),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(
                         context); // Navigate back to the previous screen
                   },
-                  child: Text('Back'),
+                  child: const Text('Back'),
                 ),
               ],
             ),
@@ -74,11 +74,11 @@ class MemberDetailsPage extends StatelessWidget {
         children: [
           Text(
             '$label:',
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(width: 10.0),
+          const SizedBox(width: 10.0),
           Expanded(
             child: Text(value),
           ),

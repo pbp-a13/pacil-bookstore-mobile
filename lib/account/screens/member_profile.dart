@@ -1,33 +1,53 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:toko_buku/account/models/account.dart';
+import 'package:http/http.dart' as http;
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class AccountInformationPage extends StatefulWidget {
-  final Account account;
-
-  AccountInformationPage({required this.account});
-
+  const AccountInformationPage({Key? key, required this.cookieRequest})
+      : super(key: key);
+  final CookieRequest cookieRequest;
   @override
-  _AccountInformationPageState createState() => _AccountInformationPageState();
+  _AccountInformationPageState createState() =>
+      _AccountInformationPageState(cookieRequest);
 }
 
 class _AccountInformationPageState extends State<AccountInformationPage> {
+  final CookieRequest cookieRequest;
+  _AccountInformationPageState(this.cookieRequest);
+
   bool isEditing = false;
   late TextEditingController namaController;
   late TextEditingController emailController;
   late TextEditingController alamatController;
+  late String username;
+  late int saldo;
+  late List<String> purchasedBooks;
+  late List<String> reviews;
 
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with existing data
-    namaController = TextEditingController(text: widget.account.name);
-    emailController = TextEditingController(text: widget.account.email);
-    alamatController = TextEditingController(text: widget.account.address);
+    username = '';
+    namaController = TextEditingController();
+    emailController = TextEditingController();
+    alamatController = TextEditingController();
+    saldo = 0;
+    purchasedBooks = [];
+    reviews = [];
+    _fetchAccountInfo(cookieRequest).then((accountInfo) {
+      namaController.text = accountInfo[0] ?? '';
+      emailController.text = accountInfo[1] ?? '';
+      alamatController.text = accountInfo[2] ?? '';
+      username = accountInfo[3] ?? '';
+      saldo = accountInfo[4] ?? 0;
+      // purchasedBooks = List<String>.from(accountInfo[5] ?? []);
+      // reviews = List<String>.from(accountInfo['reviews'] ?? []);
+    });
   }
 
   @override
   void dispose() {
-    // Dispose controllers when the widget is disposed
     namaController.dispose();
     emailController.dispose();
     alamatController.dispose();
@@ -38,18 +58,18 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Account Information'),
+        title: const Text('Account Information'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Account Information',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -58,8 +78,17 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
               },
               child: Text(isEditing ? 'Cancel' : 'Edit'),
             ),
-            SizedBox(height: 20),
-            if (isEditing) _buildEditForm() else _buildAccountInfo(),
+            const SizedBox(height: 20),
+            if (isEditing)
+              _buildEditForm()
+            else
+              FutureBuilder<Widget>(
+                future: _buildAccountInfo(cookieRequest),
+                builder:
+                    (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                  return snapshot.data ?? CircularProgressIndicator();
+                },
+              ),
           ],
         ),
       ),
@@ -72,61 +101,108 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
         children: [
           TextFormField(
             controller: namaController,
-            decoration: InputDecoration(labelText: 'Nama'),
+            decoration: const InputDecoration(labelText: 'Nama'),
           ),
           TextFormField(
             controller: emailController,
-            decoration: InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: 'Email'),
           ),
           TextFormField(
             controller: alamatController,
-            decoration: InputDecoration(labelText: 'Alamat'),
+            decoration: const InputDecoration(labelText: 'Alamat'),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              // Implement your logic to update account details
-              _updateAccountInfo();
+              _updateAccountInfo(cookieRequest);
+              setState(() {
+                isEditing = false;
+              });
             },
-            child: Text('Submit'),
+            child: const Text('Submit'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildAccountInfo() {
+  Future<Widget> _buildAccountInfo(CookieRequest request) async {
+    String djangoServerUrl = 'http://localhost:8000';
+    String apiUrl = '$djangoServerUrl/auth/get_account';
+    final List<dynamic> listtt = [];
+
+    try {
+      final response = await request.get(apiUrl);
+
+      response.forEach((key, value) {
+        listtt.add(value);
+      });
+    } catch (e) {
+      print('Exception during account fetch: $e');
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Username: ${widget.account.user.username}'),
-        Text('Nama: ${widget.account.name}'),
-        Text('Email: ${widget.account.email}'),
-        Text('Alamat: ${widget.account.address}'),
-        Text('Saldo: ${widget.account.balance}'),
-        SizedBox(height: 20),
-        Text('Buku yang Telah Dibeli:'),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for (var book in widget.account.purchasedBooks)
-              Text('- ${book.title}'), // asumsi true (kayaknya salah)
-          ],
-        ),
-        SizedBox(height: 20),
-        Text('Reviews:'),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Add logic to display reviews
-          ],
-        ),
+        Text('Username: ${listtt[3]}'),
+        Text('Nama: ${listtt[0]}'),
+        Text('Email: ${listtt[1]}'),
+        Text('Alamat: ${listtt[2]}'),
+        Text('Saldo: ${listtt[4]}'),
+        // masih belom selesai
+        Text('Buku yang Telah Dibeli: belom sempet bikin'),
+        Text('Reviews: harusnya tar ada tombol buat dua ini'),
       ],
     );
   }
 
-  void _updateAccountInfo() {
-    // Implement your logic to send a POST request to update account details
-    // Use the values from controllers: namaController.text, emailController.text, etc.
+  Future<List<dynamic>> _fetchAccountInfo(CookieRequest request) async {
+    String djangoServerUrl = 'http://localhost:8000';
+    String apiUrl = '$djangoServerUrl/auth/get_account';
+    final List<dynamic> listtt = [];
+
+    try {
+      final response = await request.get(apiUrl);
+
+      response.forEach((key, value) {
+        listtt.add(value);
+      });
+
+      return listtt;
+    } catch (e) {
+      print('Exception during account fetch: $e');
+      return [];
+    }
+  }
+
+  Future<void> _updateAccountInfo(CookieRequest request) async {
+    String nama = namaController.text;
+    String email = emailController.text;
+    String alamat = alamatController.text;
+
+    Map<String, String> data = {
+      'nama': nama,
+      'email': email,
+      'alamat': alamat,
+    };
+
+    String jsonData = jsonEncode(data);
+
+    try {
+      final response = await request.postJson(
+          'http://localhost:8000/auth/update_account', jsonData);
+      // final response = await http.post(
+      //   Uri.parse(apiUrl),
+      //   headers: {'Content-Type': 'application/json'},
+      //   body: jsonData,
+      // );
+
+      if (response.statusCode == 200) {
+        print('Account updated successfully');
+        print('Failed to update account: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      print('Exception during account update: $e');
+    }
   }
 }

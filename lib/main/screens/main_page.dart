@@ -134,7 +134,7 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(150.0),
+        preferredSize: const Size.fromHeight(150.0),
         child: AppBar(
           toolbarHeight: 150,
           title: MyRowWidget(onSubmit: collectStates),
@@ -160,7 +160,7 @@ class _MainPageState extends State<MainPage> {
             } else {
               return LayoutBuilder(
                 builder: (context, constraints) {
-                  final double cardWidth = 200.0; // Adjust as needed
+                  const double cardWidth = 200.0; // Adjust as needed
                   final int crossAxisCount =
                       (constraints.maxWidth / cardWidth).floor();
                   var cardColor = Colors.white70;
@@ -199,7 +199,7 @@ class _MainPageState extends State<MainPage> {
                           
                         ),
                         child: Container(
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: cardWidth,
                           ),
                           child: Padding(

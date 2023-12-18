@@ -10,10 +10,8 @@ class BookFilterArguments {
   final String searchBy;
   final String sortBy;
 
-
   BookFilterArguments(this.searchBy, this.sortBy);
 }
-
 
 class MainPageSearch extends StatefulWidget {
   const MainPageSearch({Key? key}) : super(key: key);
@@ -25,22 +23,16 @@ class MainPageSearch extends StatefulWidget {
 }
 
 class _MainPageSearchState extends State<MainPageSearch> {
-
-
-
-
   Future<List<Book>> fetchItem() async {
-
-    
-
-    final args = ModalRoute.of(context)!.settings.arguments as BookFilterArguments;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as BookFilterArguments;
     // ATTN: Ganti URL sesuai kebutuhan
-    var urlString = 'http://localhost:8000/json/${args.searchBy}/${args.sortBy}';
-    var url = Uri.parse(
-        urlString);
+    var urlString =
+        'http://localhost:8000/json/${args.searchBy}/${args.sortBy}';
+    var url = Uri.parse(urlString);
     var response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
+      url,
+      headers: {"Content-Type": "application/json"},
     );
 
     var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -54,12 +46,12 @@ class _MainPageSearchState extends State<MainPageSearch> {
     return listItem;
   }
 
+  String searchText = '';
+  String radioGroup1 = '';
+  String radioGroup2 = '';
 
-    String searchText = '';
-    String radioGroup1 = '';
-    String radioGroup2 = '';
-
-    void collectStates(String searchText, String radioGroup1, String radioGroup2) {
+  void collectStates(
+      String searchText, String radioGroup1, String radioGroup2) {
     // Do something with the states...
     setState(() {
       this.searchText = searchText;
@@ -80,10 +72,12 @@ class _MainPageSearchState extends State<MainPageSearch> {
         preferredSize: Size.fromHeight(150.0),
         child: AppBar(
           toolbarHeight: 150,
-          title: MyRowWidget(onSubmit: collectStates,),
+          title: MyRowWidget(
+            onSubmit: collectStates,
+          ),
         ),
       ),
-      drawer: const LeftDrawer(),
+      // drawer: const LeftDrawer(),
       body: FutureBuilder(
         future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -157,16 +151,16 @@ class _MainPageSearchState extends State<MainPageSearch> {
                                   ),
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
-                                  ),
+                                ),
                                 const SizedBox(height: 10),
-                                  Text(
-                                    "${snapshot.data![index].fields.price}",
-                                    style: const TextStyle(
-                                      fontSize: 9,
-                                    ),
-                                    softWrap: true,
-                                    overflow: TextOverflow.ellipsis,
+                                Text(
+                                  "${snapshot.data![index].fields.price}",
+                                  style: const TextStyle(
+                                    fontSize: 9,
                                   ),
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),

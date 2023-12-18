@@ -25,6 +25,8 @@ class Book {
         fields: Fields.fromJson(json["fields"]),
     );
 
+  get title => null;
+
   get quantity => null;
 
     Map<String, dynamic> toJson() => {
