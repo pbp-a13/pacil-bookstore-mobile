@@ -157,13 +157,20 @@ class _MainPageState extends State<MainPage> {
                     itemBuilder: (_, index) => GestureDetector(
                       onTap: () {
                         // Handle the card tap, e.g., navigate to detail pageb
-                        Navigator.pushNamed(
-                          context,
-                          BookInfoPage.routeName,
-                          arguments: BookInfoArguments(
-                            bookId: "${snapshot.data![index].pk}"
-                          ),
-                        );
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   BookInfoPage.routeName,
+                        //   arguments: BookInfoArguments(
+                        //     bookId: "${snapshot.data![index].pk}"
+                        //   ),
+                        // );
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return BookInfoPage(
+                              id: snapshot.data![index].pk!,
+                            );
+                          },
+                        ));
                       },
                       child: Card(
                         margin: const EdgeInsets.symmetric(
