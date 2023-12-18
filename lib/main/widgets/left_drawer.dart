@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:toko_buku/account/screens/login.dart';
 import 'package:toko_buku/cart/screen/cart.dart';
 // import 'package:pacil_inventory/models/item.dart';
@@ -8,15 +12,21 @@ import 'package:toko_buku/cart/screen/cart.dart';
 import 'package:toko_buku/main/screens/main_page.dart';
 import 'package:toko_buku/order/screens/orderlist.dart';
 import 'package:toko_buku/book_info/screens/book_info.dart';
+import 'package:http/http.dart' as http;
 
 class LeftDrawer extends StatelessWidget {
-  const LeftDrawer({super.key});
+  final bool isLoggedIn;
+  final bool isAdmin;
+  final bool isAdminMode;
 
+  const LeftDrawer({ Key? key, required this.isLoggedIn, required this.isAdmin, required this.isAdminMode }): super(key: key);
+
+  
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
+      final request = context.watch<CookieRequest>();
+      var childrenTemp = 
+    [
           const DrawerHeader(
             decoration: BoxDecoration(
     color: Colors.indigo,
@@ -57,17 +67,17 @@ class LeftDrawer extends StatelessWidget {
   },
 ),
 
-ListTile(
-    leading: const Icon(Icons.shopping_basket),
-    title: const Text('Daftar Item'),
-    onTap: () {
-        // Route menu ke halaman produk
-        Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const CartPage()),
-        );
-    },
-),
+// ListTile(
+//     leading: const Icon(Icons.shopping_basket),
+//     title: const Text('Daftar Item'),
+//     onTap: () {
+//         // Route menu ke halaman produk
+//         Navigator.push(
+//         context,
+//         MaterialPageRoute(builder: (context) => const CartPage()),
+//         );
+//     },
+// ),
 
 // ListTile(
 //   leading: const Icon(Icons.add_shopping_cart),
@@ -82,19 +92,123 @@ ListTile(
 //   },
 // ),
 
+
+
+
+// buat ngetest aja
 ListTile(
-  leading: const Icon(Icons.add_shopping_cart),
-  title: const Text('Login'),
-  // Bagian redirection ke InventoryFormPage
+  leading: const Icon(Icons.read_more),
+  title: const Text('Book Info'),
   onTap: () {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        ));
+    Navigator.pushNamed(
+      context,
+      BookInfoPage.routeName,
+      arguments: BookInfoArguments(
+        bookId: "62" // dummy
+      ),
+    );
   },
 ),
-        ],
+
+
+// buat ngetest aja
+ListTile(
+  leading: const Icon(Icons.read_more),
+  title: const Text('Book Info'),
+  onTap: () {
+    Navigator.pushNamed(
+      context,
+      BookInfoPage.routeName,
+      arguments: BookInfoArguments(
+        bookId: "62" // dummy
+      ),
+    );
+  },
+),
+
+
+        ];
+    if (isLoggedIn == true){
+      childrenTemp += [
+        ListTile(
+          leading: const Icon(Icons.add_shopping_cart),
+          title: const Text('Logout'),
+          onTap: () async {
+final response = await request.logout(
+            // TODO: Ganti URL sesuai kebutuhan
+            "http://localhost:8000/auth/logout/");
+        String message = response["message"];
+        if (response['status']) {
+          String uname = response["username"];
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("$message Sampai jumpa, $uname."),
+          ));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainPage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("$message"),
+          ));
+        }
+
+          },
+        ),
+
+
+      ];
+      if (isAdmin == true){
+        String listText;
+        if (isAdminMode == true){
+          listText = "Member";
+        }
+        else{
+          listText = "Admin";
+        }
+          childrenTemp += [
+            ListTile(
+              leading: const Icon(Icons.add_shopping_cart),
+              title: Text('$listText Mode'),
+              onTap: () async {
+              final response = await request.post('http://localhost:8000/switch_mode_flutter', {
+                "username": request.jsonData["username"],
+              });
+
+    // melakukan decode response menjadi bentuk json
+    request.jsonData["is_admin_mode"] = response["is_admin_mode"];
+    Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainPage()),
+          );
+
+    //print(data);
+              }
+            ),
+          ];
+        }
+
+      }
+    
+    else{
+      childrenTemp += [
+        ListTile(
+          leading: const Icon(Icons.add_shopping_cart),
+          title: const Text('Login'),
+          // Bagian redirection ke InventoryFormPage
+          onTap: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ));
+          },
+        ),
+      ];
+    }
+    return Drawer(
+      child: ListView(
+        children: childrenTemp
       ),
     );
   }

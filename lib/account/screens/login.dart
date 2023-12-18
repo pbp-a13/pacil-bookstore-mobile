@@ -78,9 +78,12 @@ class _LoginPageState extends State<LoginPage> {
                                 if (request.loggedIn) {
                                     String message = response['message'];
                                     String uname = response['username'];
-                                    Navigator.pushReplacement(
+                                    if (response['is_admin'] == false){
+                                      response['is_admin_mode'] = false;
+                                    }
+                                    Navigator.pushReplacementNamed(
                                         context,
-                                        MaterialPageRoute(builder: (context) => MainPage()),
+                                        MainPage.routeName,
                                     );
                                     ScaffoldMessenger.of(context)
                                         ..hideCurrentSnackBar()
