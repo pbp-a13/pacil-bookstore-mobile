@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class EditFormPage extends StatefulWidget {
   static const String routeName = '/editForm';
 
-  final String bookId;
+  final int bookId;
 
   EditFormPage({required this.bookId, Key? key}) : super(key: key);
 
@@ -40,11 +40,11 @@ class _EditFormPageState extends State<EditFormPage> {
 
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    return Book.fromJson(data);
+    return Book.fromJson(data[0]);
   }
 
-  Future<void> fetchBookData(String bookId) async {
-    final Book book = await fetchItem(bookId);
+  Future<void> fetchBookData(int bookId) async {
+    final Book book = await fetchItem(bookId.toString());
     setState(() {
       _authors.text = book.fields.authors ?? '';
       _title.text = book.fields.title;
@@ -150,19 +150,19 @@ class _EditFormPageState extends State<EditFormPage> {
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
                     // Kirim ke Django dan tunggu respons
-                    final response = await http.post(
-                      Uri.parse("http://localhost:8000/edit-flutter/"),
-                      headers: <String, String>{
-                        'Content-Type': 'application/json; charset=UTF-8',
-                      },
-                      body: jsonEncode(<String, String>{
+                    final response = await request.post(
+                      "http://localhost:8000/book-info/edit-flutter/${widget.bookId}/",
+                      // headers: <String, String>{
+                      //   'Content-Type': 'application/json; charset=UTF-8',
+                      // },
+                      jsonEncode(<String, String>{
                         'title': _title.text,
                         'authors': _authors.text,
-                        'price': _stock.text,
-                        'stock': _price.text,
+                        'price': _price.text,
+                        'stock': _stock.text,
                       }),
                     );
-                    if (response.statusCode == 200) {
+                    if (response['status'] == 'success') {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Perubahan berhasil disimpan!"),
                       ));
@@ -176,7 +176,7 @@ class _EditFormPageState extends State<EditFormPage> {
                     Navigator.pop(context); // Navigate back
                   }
                 },
-                child: const Text('Save', style: TextStyle(color: Colors.white)),
+                child: const Text('Save', style: TextStyle(color: Colors.indigoAccent)),
               ),
             ],
           ),
