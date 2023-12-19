@@ -23,10 +23,9 @@ class MyApp extends StatelessWidget {
         return request;
       },
       child : MaterialApp(
-      routes: {
-          '/mainPage': (context) => MainPage(),
-      '/bookInfo': (context) => BookInfoPage(),
-      },
+      // routes: {
+      //  '/bookInfo': (context) => BookInfoPage(),
+      // },
       title: 'Pacil Inventory',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
