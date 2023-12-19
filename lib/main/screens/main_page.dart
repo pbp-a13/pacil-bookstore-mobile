@@ -11,9 +11,10 @@ import 'package:provider/provider.dart';
 
 
 
-
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
+
+  static const routeName = '/mainPage';
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -26,10 +27,9 @@ class _MainPageState extends State<MainPage> {
 
 
 
+
+
   Future<List<Book>> fetchItem(value, search_mode, sort_mode) async {
-    print('value: $value');
-    print('search mode: $search_mode');
-    print('sort mode: $sort_mode');
     var url;
     if (value != null){
       value = value.replaceAll(' ', '+');
@@ -97,9 +97,6 @@ class _MainPageState extends State<MainPage> {
 
     // Print or perform any action with the collected states
     
-    print('Search Text: $searchText');
-    print('Radio Group 1: $radioGroup1');
-    print('Radio Group 2: $radioGroup2');
 
     // fetchItem(searchText, radioGroup1, radioGroup2);
 
@@ -110,21 +107,40 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    print(request.jsonData);
             // final request = context.watch<CookieRequest>();
     // var value, search_mode, sort_mode = collectStates(searchText, radioGroup1, radioGroup2);
     //     print('build value: $value');
     //     print('build search mode: $search_mode');
     //     print('build sort mode: $sort_mode');
 
+    var isLoggedIn;
+    var isAdmin;
+    var isAdminMode;
+    var cookieData = request.jsonData;
+    if (cookieData.length == 0){
+      isLoggedIn = false;
+      isAdmin = false;
+      isAdminMode = false;
+    }
+    else{
+      isLoggedIn = true;
+      isAdmin = cookieData['is_admin'];
+      isAdminMode = cookieData['is_admin_mode'];
+    }
+
+
+
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(150.0),
+        preferredSize: const Size.fromHeight(150.0),
         child: AppBar(
           toolbarHeight: 150,
           title: MyRowWidget(onSubmit: collectStates),
         ),
       ),
-      drawer: const LeftDrawer(),
+      drawer: LeftDrawer(isLoggedIn: isLoggedIn, isAdmin: isAdmin, isAdminMode: isAdminMode),
       body: FutureBuilder(
         future: fetchItem(value, search_mode, sort_mode),
         builder: (context, AsyncSnapshot snapshot) {
@@ -144,9 +160,19 @@ class _MainPageState extends State<MainPage> {
             } else {
               return LayoutBuilder(
                 builder: (context, constraints) {
-                  final double cardWidth = 200.0; // Adjust as needed
+                  const double cardWidth = 200.0; // Adjust as needed
                   final int crossAxisCount =
                       (constraints.maxWidth / cardWidth).floor();
+                  var cardColor = Colors.white70;
+                  //TODO: Handle Jika berbagai role
+                  if (isLoggedIn){
+                    if (isAdmin){
+                      if (isAdminMode){
+                      cardColor = Colors.yellow;
+                      }
+                      else{}
+                    }
+                  }
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
@@ -173,12 +199,14 @@ class _MainPageState extends State<MainPage> {
                         ));
                       },
                       child: Card(
+                        color: cardColor,
                         margin: const EdgeInsets.symmetric(
                           horizontal: 5,
                           vertical: 5,
+                          
                         ),
                         child: Container(
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: cardWidth,
                           ),
                           child: Padding(
