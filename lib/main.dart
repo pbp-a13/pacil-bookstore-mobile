@@ -22,20 +22,18 @@ class MyApp extends StatelessWidget {
         CookieRequest request = CookieRequest();
         return request;
       },
-      child : MaterialApp(
-      routes: {
+      child: MaterialApp(
+        routes: {
           '/mainPage': (context) => MainPage(),
-      '/bookInfo': (context) => BookInfoPage(),
-      },
-      title: 'Pacil Inventory',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        useMaterial3: true,
+          // '/bookInfo': (context) => BookInfoPage(),
+        },
+        title: 'Pacil Inventory',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          useMaterial3: true,
+        ),
+        home: const MainPage(),
       ),
-      home: const MainPage(),
-    ),
     );
-
   }
 }
-
