@@ -5,6 +5,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:toko_buku/account/models/review.dart';
 import 'package:toko_buku/book/models.dart';
+import 'package:toko_buku/book_info/screens/book_info.dart';
 import 'package:toko_buku/main/widgets/left_drawer.dart';
 
 class BookReviewPage extends StatelessWidget {
@@ -83,16 +84,15 @@ class BookReviewPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Pacil Inventory',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white,),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        backgroundColor: Color.fromRGBO(68, 126, 212, 1),
-        foregroundColor: Colors.white,
+        title: Text('Penilaian & Ulasan', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.grey[100]),),
+        backgroundColor: Colors.indigoAccent[400],
       ),
-      // drawer: LeftDrawer(isLoggedIn: isLoggedIn, isAdmin: isAdmin, isAdminMode: isAdminMode),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -118,27 +118,14 @@ class BookReviewPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children : [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Penilaian & Ulasan",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.indigo),
-                            ),
-                          ),
-                          SizedBox(height: 6),
+                          SizedBox(height: 30),
                           Container(
                             width: MediaQuery.of(context).size.width - 32,
                             height: 120,
                             padding: EdgeInsets.all(25),
                             margin: EdgeInsets.symmetric(vertical: 10),
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 207, 222, 255),
-                              border: Border.all(width: 1, color: Colors.blueGrey.withOpacity(0.5)),
+                              color: Colors.blueAccent[100],
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Column(
@@ -242,9 +229,10 @@ class BookReviewPage extends StatelessWidget {
                           child: Column(
                             children: [
                               ////////////////////////
+                              SizedBox(height: 6),
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text(
                                   "Penilaian & Ulasan",
                                   textAlign: TextAlign.start,
@@ -373,7 +361,41 @@ class BookReviewPage extends StatelessWidget {
             ),
           ]
         )
-      )
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 90,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        color: Colors.indigoAccent[400],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(Icons.menu_book_rounded, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Ink(
+                  decoration: ShapeDecoration(
+                    color: Colors.white.withOpacity(0.1), // Warna latar belakang icon
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.comment, color: Colors.white),
+                    onPressed: () {},
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text('Ulasan', style: TextStyle(color: Colors.white)),
+              ]
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
