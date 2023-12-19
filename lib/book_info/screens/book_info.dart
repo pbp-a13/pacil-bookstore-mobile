@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-// import 'package:toko_buku/account/models/review.dart';
+import 'package:toko_buku/account/models/review.dart';
 import 'package:toko_buku/book/models.dart';
 import 'package:toko_buku/book_info/screens/book_review.dart';
 import 'package:toko_buku/book_info/screens/edit_form.dart';
@@ -29,11 +29,28 @@ class BookInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    var isLoggedIn;
+    var isAdmin;
+    var isAdminMode;
+    var cookieData = request.jsonData;
+    if (cookieData.length == 0){
+      isLoggedIn = false;
+      isAdmin = false;
+      isAdminMode = false;
+    }
+    else{
+      isLoggedIn = true;
+      isAdmin = cookieData['is_admin'];
+      isAdminMode = cookieData['is_admin_mode'];
+    }
+
     final List<FeatureButton> button = [
       FeatureButton("Edit", Icons.edit, Colors.blue, id),
       FeatureButton("Delete", Icons.delete, Colors.red, id),
       FeatureButton("Masukkan Keranjang", Icons.add_shopping_cart, Colors.lightBlueAccent, id),
     ]; 
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -45,7 +62,7 @@ class BookInfoPage extends StatelessWidget {
         backgroundColor: Color.fromRGBO(68, 126, 212, 1),
         foregroundColor: Colors.white,
       ),
-      drawer: const LeftDrawer(),
+      // drawer: LeftDrawer(isLoggedIn: isLoggedIn, isAdmin: isAdmin, isAdminMode: isAdminMode),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -341,21 +358,21 @@ class BookInfoPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 30),
-                              // ElevatedButton(
-                              //   onPressed: () {
-                              //     Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (context) => BookReviewPage(id: id), // Ganti ReviewPage dengan nama halaman yang sesuai
-                              //       ),
-                              //     );
-                              //   },
-                              //   style: ElevatedButton.styleFrom(
-                              //     primary: Colors.indigo, // Atur warna latar belakang tombol
-                              //     onPrimary: Colors.white, // Atur warna teks tombol
-                              //   ),
-                              //   child: Text("Lihat Penilaian & Ulasan"),
-                              // ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookReviewPage(id: id), // Ganti ReviewPage dengan nama halaman yang sesuai
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.indigo, // Atur warna latar belakang tombol
+                                  onPrimary: Colors.white, // Atur warna teks tombol
+                                ),
+                                child: Text("Lihat Penilaian & Ulasan"),
+                              ),
                               SizedBox(height: 30),
                               // Container(
                               //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
