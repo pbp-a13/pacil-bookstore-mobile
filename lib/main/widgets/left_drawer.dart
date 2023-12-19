@@ -180,8 +180,9 @@ class LeftDrawer extends StatelessWidget {
 //     Navigator.pushNamed(
 //       context,
 //       BookInfoPage.routeName,
-//       arguments: BookInfoArguments(bookId: "62" // dummy
-//           ),
+//       arguments: BookInfoArguments(
+//         bookId: "62" // dummy
+//       ),
 //     );
 //   },
 // ),
