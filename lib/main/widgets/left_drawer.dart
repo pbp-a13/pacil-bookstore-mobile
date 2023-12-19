@@ -173,18 +173,18 @@ class LeftDrawer extends StatelessWidget {
 // ),
 
 // buat ngetest aja
-      // ListTile(
-      //   leading: const Icon(Icons.read_more),
-      //   title: const Text('Book Info'),
-      //   onTap: () {
-      //     Navigator.pushNamed(
-      //       context,
-      //       BookInfoPage.routeName,
-      //       arguments: BookInfoArguments(bookId: "62" // dummy
-      //           ),
-      //     );
-      //   },
-      // ),
+// ListTile(
+//   leading: const Icon(Icons.read_more),
+//   title: const Text('Book Info'),
+//   onTap: () {
+//     Navigator.pushNamed(
+//       context,
+//       BookInfoPage.routeName,
+//       arguments: BookInfoArguments(bookId: "62" // dummy
+//           ),
+//     );
+//   },
+// ),
 
 // buat ngetest aja
       ListTile(

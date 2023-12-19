@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       },
       child : MaterialApp(
       // routes: {
-      //  '/bookInfo': (context) => BookInfoPage(),
+      //   '/bookInfo': (context) => BookInfoPage(),
       // },
       title: 'Pacil Inventory',
       theme: ThemeData(
