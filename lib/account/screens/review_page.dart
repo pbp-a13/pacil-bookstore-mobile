@@ -29,7 +29,7 @@ class _MemberReviewsPageState extends State<MemberReviewsPage> {
 
   Future<void> _fetchReviews(CookieRequest request) async {
     final data = await request.get(
-      'http://localhost:8000/account/get_member_reviews/',
+      'https://pts-a13.vercel.app/account/get_member_reviews/',
     );
 
     List<Review> reviews =
