@@ -4,6 +4,7 @@
 [![Build status](https://build.appcenter.ms/v0.1/apps/27b294aa-bb96-4baf-b58e-a0240f19c35d/branches/main/badge)](https://appcenter.ms)
 
 ## Website: [http://pacil-bookstore.pbp.cs.ui.ac.id/](http://pacil-bookstore.pbp.cs.ui.ac.id/)
+## APK: [https://install.appcenter.ms/orgs/pacil-bookstore/apps/pacil-bookstore/distribution_groups/public](https://install.appcenter.ms/orgs/pacil-bookstore/apps/pacil-bookstore/distribution_groups/public)
 =======
 =======
 
