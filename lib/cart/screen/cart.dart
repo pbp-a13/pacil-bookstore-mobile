@@ -43,7 +43,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<List<CartModels>> fetchOrders() async {
-    var url = Uri.parse('http://127.0.0.1:8000/book-info/get-cart-flutter/');
+    var url = Uri.parse('https://pts-a13.vercel.app/book-info/get-cart-flutter/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},

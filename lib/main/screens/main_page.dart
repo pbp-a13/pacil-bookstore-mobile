@@ -241,7 +241,7 @@ class _MainPageState extends State<MainPage> {
                                     onPressed: () async {
                                       if (isLoggedIn) {
                                         final response = await request.postJson(
-                                            "http://127.0.0.1:8000/order/make_order/",
+                                            "https://pts-a13.vercel.app/order/make_order/",
                                             jsonEncode(<String, String>{
                                               'pk': snapshot.data![index].pk
                                                   .toString()

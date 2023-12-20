@@ -15,10 +15,6 @@ import 'package:toko_buku/account/screens/review_page.dart';
 import 'package:toko_buku/cart/screen/cart.dart';
 import 'package:toko_buku/cart/screen/show_cart.dart';
 import 'package:toko_buku/main/models/admin.dart';
-// import 'package:pacil_inventory/models/item.dart';
-// import 'package:pacil_inventory/screens/list_item.dart';
-// import 'package:pacil_inventory/screens/menu.dart';
-// import 'package:pacil_inventory/screens/inventory_list_form.dart';
 import 'package:toko_buku/main/screens/main_page.dart';
 import 'package:toko_buku/order/screens/list_orders.dart';
 import 'package:toko_buku/order/screens/orderlist.dart';
@@ -87,7 +83,7 @@ class LeftDrawer extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.add),
           title: const Text('Register'),
-          // Bagian redirection ke InventoryFormPage
+          // Bagian redirection ke BookFormPage
           onTap: () async {
             Navigator.push(
                 context,
@@ -168,7 +164,7 @@ class LeftDrawer extends StatelessWidget {
                 ));
           },
         ),
-      ],
+      
         
         
 
@@ -304,7 +300,7 @@ ListTile(
         ListTile(
           leading: const Icon(Icons.login),
           title: const Text('Login'),
-          // Bagian redirection ke InventoryFormPage
+          // Bagian redirection ke BookFormPage
           onTap: () {
             Navigator.push(
                 context,

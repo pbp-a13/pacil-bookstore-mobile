@@ -486,7 +486,7 @@ class OrderListPage extends StatelessWidget {
                 left: 92,
                 top: 18,
                 child: Text(
-                  'Pacil Inventory',
+                  'Pacil Bookstore',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
