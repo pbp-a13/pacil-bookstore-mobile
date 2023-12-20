@@ -12,9 +12,10 @@ import 'package:toko_buku/main/widgets/left_drawer.dart';
 class BookInfoPage extends StatelessWidget {
   BookInfoPage({super.key, required this.id});
   final int id;
+  int rating = 0;
 
   Future<Book> getBook() async {
-    var url = "http://localhost:8000/json/$id/";
+    var url = "http://localhost:8000/book-info/json/$id/";
     final response = await http.get(Uri.parse(url), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
@@ -77,386 +78,360 @@ class BookInfoPage extends StatelessWidget {
                     );
                   } else {
                     Book book = snapshot.data!;
-                    // return ListView.builder(
-                    //   itemCount: 1,
-                    //   itemBuilder: (context, index) {
-                        return Card(
-                          child: Column(
-                            children: [
-                              SizedBox(height: 30),
-                              Container(
-                                alignment: Alignment.center,
-                                child: 
-                                  Icon(
-                                    Icons.image_outlined,
-                                    color: Colors.grey,
-                                    size: 200,
-                                  ),
+                    rating = book.fields.rating;
+                    return Card(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 30),
+                          Container(
+                            alignment: Alignment.center,
+                            child: 
+                              Icon(
+                                Icons.image_outlined,
+                                color: Colors.grey,
+                                size: 200,
                               ),
-                              SizedBox(height: 30),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[50], 
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20.0),
-                                    topRight: Radius.circular(20.0),
-                                  ),
-                                ),
-                                child: Column(
+                          ),
+                          SizedBox(height: 30),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[50], 
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "${book.fields.authors}",
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.black),
-                                                ),
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "${book.fields.title}",
-                                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
-                                                ),
-                                              ),
-                                            ],
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "${book.fields.authors}",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.black),
+                                            ),
                                           ),
-                                        ),
-                                        Visibility(
-                                          visible: isLoggedIn && isAdmin && isAdminMode,
-                                          child: Expanded(
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                OutlinedButton(
-                                                  onPressed: () async {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => EditFormPage(bookId: id),
-                                                      ),
-                                                    );
-                                                  },
-                                                  style: OutlinedButton.styleFrom(
-                                                    side: BorderSide(color: Colors.blueAccent[700]!),
-                                                    shape: CircleBorder(),
-                                                  ),
-                                                  child: Icon(Icons.edit, color: Colors.blueAccent[700], size: 15,),
-                                                ),
-                                                OutlinedButton(
-                                                  onPressed: () async {
-                                                    bool confirmDelete = await showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) {
-                                                        return AlertDialog(
-                                                          title: Text("Konfirmasi Hapus"),
-                                                          content: Text("Apakah Anda yakin ingin menghapus buku ini?"),
-                                                          actions: <Widget>[
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                Navigator.of(context).pop(false);
-                                                              },
-                                                              child: Text("Batal"),
-                                                            ),
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                Navigator.of(context).pop(true);
-                                                              },
-                                                              child: Text("Hapus"),
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                    if (confirmDelete == true) {
-                                                      final response = await request.postJson(
-                                                        "http://localhost:8000/delete-flutter/$id/",
-                                                        jsonEncode(<String, String>{})
-                                                      );
-                                                      if (response['status'] == 'success') {
-                                                        ScaffoldMessenger.of(context)
-                                                          ..hideCurrentSnackBar()
-                                                          ..showSnackBar(SnackBar(
-                                                              content: Text("Buku berhasil dihapus!")));
-                                                      } else {
-                                                        ScaffoldMessenger.of(context)
-                                                          .showSnackBar(const SnackBar(content: Text("Terdapat kesalahan, silakan coba lagi."))
-                                                        );
-                                                      }
-                                                    }
-                                                  },
-                                                  style: OutlinedButton.styleFrom(
-                                                    side: BorderSide(color: Colors.redAccent[700]!),
-                                                    shape: CircleBorder(),
-                                                  ),
-                                                  child: Icon(Icons.delete, color: Colors.redAccent[700], size: 15,),
-                                                ),
-                                              ]
-                                            )
+                                          Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 16),
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "${book.fields.title}",
+                                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-
-                                    Row(
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                          child: Text(
-                                            "Rp${book.fields.price}",
-                                            style: TextStyle(
-                                              color: Color.fromRGBO(0, 102, 255, 1),
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: book.fields.stock == 0 ? Colors.red : Colors.green,
-                                            borderRadius: BorderRadius.circular(4),
-                                          ),
-                                          child: Text(
-                                            book.fields.stock == 0 ? 'Stock habis' : 'Tersisa ${book.fields.stock} stock',
-                                            style: TextStyle(fontSize: 12, color: Colors.white , fontWeight: FontWeight.w400),),
+                                    Visibility(
+                                      visible: isLoggedIn && isAdmin && isAdminMode,
+                                      child: Expanded(
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            OutlinedButton(
+                                              onPressed: () async {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => EditFormPage(bookId: id),
+                                                  ),
+                                                );
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                side: BorderSide(color: Colors.blueAccent[700]!),
+                                                shape: CircleBorder(),
+                                              ),
+                                              child: Icon(Icons.edit, color: Colors.blueAccent[700], size: 15,),
+                                            ),
+                                            OutlinedButton(
+                                              onPressed: () async {
+                                                bool confirmDelete = await showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text("Konfirmasi Hapus"),
+                                                      content: Text("Apakah Anda yakin ingin menghapus buku ini?"),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop(false);
+                                                          },
+                                                          child: Text("Batal"),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop(true);
+                                                          },
+                                                          child: Text("Hapus"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                                if (confirmDelete == true) {
+                                                  final response = await request.postJson(
+                                                    "http://localhost:8000/book-info/delete-flutter/$id/",
+                                                    jsonEncode(<String, String>{})
+                                                  );
+                                                  if (response['status'] == 'success') {
+                                                    ScaffoldMessenger.of(context)
+                                                      ..hideCurrentSnackBar()
+                                                      ..showSnackBar(SnackBar(
+                                                          content: Text("Buku berhasil dihapus!")));
+                                                  } else {
+                                                    ScaffoldMessenger.of(context)
+                                                      .showSnackBar(const SnackBar(content: Text("Terdapat kesalahan, silakan coba lagi."))
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                side: BorderSide(color: Colors.redAccent[700]!),
+                                                shape: CircleBorder(),
+                                              ),
+                                              child: Icon(Icons.delete, color: Colors.redAccent[700], size: 15,),
+                                            ),
+                                          ]
                                         )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 16),
-                                          alignment: Alignment.centerLeft,
-                                          child: Row(
-                                            children: [ 
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.black,
-                                                size: 15,
-                                              ),
-                                              SizedBox(width: 4),
-                                              Text(
-                                                "${book.fields.rating}",
-                                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 12),
-                                        Container(
-                                          child: Text("|", style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w400),)
-                                        ),
-                                        SizedBox(width: 12),
-                                        Container(
-                                          child: Text("${book.fields.jumlahTerjual} Terjual", style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w400),)
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 30),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Kategori",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.indigo),
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "${book.fields.categories}",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(height: 30),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Deskripsi",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.indigo),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Buku karya ${book.fields.authors} berjudul ${book.fields.title} dengan kategori ${book.fields.categories}.",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(height: 30),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Detail",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.indigo),
-                                      ),
-                                    ),
-                                    SizedBox(height: 6),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16,),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Judul Buku",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "${book.fields.title}",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16,),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Pengarang",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "${book.fields.authors}",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16,),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Jumlah Halaman",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "${book.fields.noOfPages}",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16,),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Penerbit",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Keperpustakaan PBP A13",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(height: 30),
-                                    // TextButton.icon(
-                                    //   onPressed: () {
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //         builder: (context) => BookReviewPage(id: id), 
-                                    //       ),
-                                    //     );
-                                    //   },
-                                    //   style: TextButton.styleFrom(
-                                    //     primary: Colors.indigo,
-                                    //     padding: EdgeInsets.all(16),
-                                    //     shape: RoundedRectangleBorder(
-                                    //       borderRadius: BorderRadius.circular(8),
-                                    //     ),
-                                    //     minimumSize: Size(150, 50),
-                                    //   ),
-                                    //   label: Text("Lihat Penilaian & Ulasan"),
-                                    //   icon: Icon(Icons.arrow_circle_right_outlined),
-                                    // ),
-                                    // SizedBox(height: 60),
                                   ],
                                 ),
-                              ),
-                            ]
-                          )
-                        );
-                    //   }
-                    // );
+                                Row(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      child: Text(
+                                        "Rp${book.fields.price}",
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(0, 102, 255, 1),
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: book.fields.stock == 0 ? Colors.red : Colors.green,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        book.fields.stock == 0 ? 'Stock habis' : 'Tersisa ${book.fields.stock} stock',
+                                        style: TextStyle(fontSize: 12, color: Colors.white , fontWeight: FontWeight.w400),),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 16),
+                                      alignment: Alignment.centerLeft,
+                                      child: Row(
+                                        children: [ 
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.black,
+                                            size: 15,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            "${book.fields.rating}",
+                                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Container(
+                                      child: Text("|", style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w400),)
+                                    ),
+                                    SizedBox(width: 12),
+                                    Container(
+                                      child: Text("${book.fields.jumlahTerjual} Terjual", style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w400),)
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 30),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Kategori",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.indigo),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "${book.fields.categories}",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                SizedBox(height: 30),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Deskripsi",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.indigo),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Buku karya ${book.fields.authors} berjudul ${book.fields.title} dengan kategori ${book.fields.categories}.",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                SizedBox(height: 30),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Detail",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.indigo),
+                                  ),
+                                ),
+                                SizedBox(height: 6),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16,),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Judul Buku",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "${book.fields.title}",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16,),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Pengarang",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "${book.fields.authors}",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16,),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Jumlah Halaman",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "${book.fields.noOfPages}",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16,),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Penerbit",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Keperpustakaan PBP A13",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
+                                  ),
+                                ),
+                                SizedBox(height: 30),
+                              ],
+                            ),
+                          ),
+                        ]
+                      )
+                    );
                   }
                 }
               }
@@ -495,7 +470,7 @@ class BookInfoPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BookReviewPage(id: id), 
+                    builder: (context) => BookReviewPage(id: id, rating: rating), 
                   ),
                 );
               },
@@ -549,9 +524,9 @@ class BookInfoPage extends StatelessWidget {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(
-                  content: Text("Harap login terlebih dahulu!", style: TextStyle(color: Colors.white),),
+                  content: Text("Harap login terlebih dahulu!", style: TextStyle(color: Colors.indigoAccent),),
                   behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.grey[900], 
+                  backgroundColor: Colors.indigo[50], 
             ));
           }
         },
