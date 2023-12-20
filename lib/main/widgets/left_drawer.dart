@@ -20,6 +20,7 @@ import 'package:toko_buku/main/models/admin.dart';
 // import 'package:pacil_inventory/screens/menu.dart';
 // import 'package:pacil_inventory/screens/inventory_list_form.dart';
 import 'package:toko_buku/main/screens/main_page.dart';
+import 'package:toko_buku/order/screens/list_orders.dart';
 import 'package:toko_buku/order/screens/orderlist.dart';
 import 'package:toko_buku/book_info/screens/book_info.dart';
 import 'package:http/http.dart' as http;
@@ -156,6 +157,20 @@ class LeftDrawer extends StatelessWidget {
             }
           },
         ),
+        ListTile(
+          leading: const Icon(Icons.read_more),
+          title: const Text('Your Orders'),
+          onTap: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const OrdersPage(),
+                ));
+          },
+        ),
+      ],
+        
+        
 
       if (isAdminMode == true)
         ListTile(
@@ -211,6 +226,23 @@ ListTile(
 //         ));
 //   },
 // ),
+
+// buat ngetest aja
+      // ListTile(
+      //   leading: const Icon(Icons.read_more),
+      //   title: const Text('Book Info'),
+      //   onTap: () {
+      //     Navigator.pushNamed(
+      //       context,
+      //       BookInfoPage.routeName,
+      //       arguments: BookInfoArguments(bookId: "62" // dummy
+      //           ),
+      //     );
+      //   },
+      // ),
+
+// buat ngetest aja
+      
     ];
     if (isLoggedIn == true) {
       childrenTemp += [

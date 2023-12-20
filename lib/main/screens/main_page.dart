@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:toko_buku/account/screens/login.dart';
 import 'dart:convert';
 
 import 'package:toko_buku/book/models.dart';
@@ -228,6 +229,44 @@ class _MainPageState extends State<MainPage> {
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
                                 ),
+                                ElevatedButton(
+                                    child: const Text(
+                                      'Order',
+                                      style: TextStyle(
+                                        fontSize: 10, // Font size
+                                        fontWeight:
+                                            FontWeight.bold, // Font weight
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      if (isLoggedIn) {
+                                        final response = await request.postJson(
+                                            "http://127.0.0.1:8000/order/make_order/",
+                                            jsonEncode(<String, String>{
+                                              'pk': snapshot.data![index].pk
+                                                  .toString()
+                                            }));
+                                        if (response['status'] == true) {
+                                          ScaffoldMessenger.of(context)
+                                            ..hideCurrentSnackBar()
+                                            ..showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "Book has been ordered!")));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                            ..hideCurrentSnackBar()
+                                            ..showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "Book is already ordered!")));
+                                        }
+                                      } else {
+                                        Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const LoginPage(),
+                                        ));
+                                      }
+                                    })
                               ],
                             ),
                           ),
