@@ -1,18 +1,17 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+
 # Proyek Tengah Semester Kelompok A13 -- pacil-bookstore
+
+[![Build status](https://build.appcenter.ms/v0.1/apps/27b294aa-bb96-4baf-b58e-a0240f19c35d/branches/main/badge)](https://appcenter.ms)
+
 ## Website: [http://pacil-bookstore.pbp.cs.ui.ac.id/](http://pacil-bookstore.pbp.cs.ui.ac.id/)
 =======
 =======
->>>>>>> 1a2e8a9de218a4668d1cfa699bd8ef78df9b9559
+
 # Proyek Akhir Semester Kelompok A13 -- pacil-bookstore
 ## Website: [https://pts-a13-not0nlines-projects.vercel.app/](https://pts-a13-not0nlines-projects.vercel.app/)
 
 ### Link Berita Acara: https://docs.google.com/spreadsheets/d/16WONjLGPqOpak5w6WIo5dhGA5JXVEU15I9eXDtfJNIo/edit?usp=sharing
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> 1a2e8a9de218a4668d1cfa699bd8ef78df9b9559
+
 
 Berikut deskripsi proyek kami.
 
