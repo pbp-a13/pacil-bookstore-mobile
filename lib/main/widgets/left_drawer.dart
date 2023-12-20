@@ -13,6 +13,7 @@ import 'package:toko_buku/account/screens/member_profile.dart';
 import 'package:toko_buku/account/screens/register.dart';
 import 'package:toko_buku/account/screens/review_page.dart';
 import 'package:toko_buku/cart/screen/cart.dart';
+import 'package:toko_buku/cart/screen/show_cart.dart';
 import 'package:toko_buku/main/models/admin.dart';
 // import 'package:pacil_inventory/models/item.dart';
 // import 'package:pacil_inventory/screens/list_item.dart';
@@ -161,18 +162,30 @@ class LeftDrawer extends StatelessWidget {
             );
           },
         ),
+//       if (isLoggedIn)
+//         ListTile(
+//             leading: const Icon(Icons.shopping_basket),
+//             title: const Text('Daftar Item'),
+//             onTap: () {
+//                 // Route menu ke halaman produk
+//                 Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (context) => ShowCartPage()),
+//                 );
+//             },
+//         ),
 
-// ListTile(
-//     leading: const Icon(Icons.shopping_basket),
-//     title: const Text('Daftar Item'),
-//     onTap: () {
-//         // Route menu ke halaman produk
-//         Navigator.push(
-//         context,
-//         MaterialPageRoute(builder: (context) => const CartPage()),
-//         );
-//     },
-// ),
+ListTile(
+    leading: const Icon(Icons.shopping_basket),
+    title: const Text('Daftar Item'),
+    onTap: () {
+        // Route menu ke halaman produk
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CartPage()),
+        );
+    },
+),
 
 // ListTile(
 //   leading: const Icon(Icons.add_shopping_cart),
