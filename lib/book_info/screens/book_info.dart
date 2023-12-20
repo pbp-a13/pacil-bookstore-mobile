@@ -481,37 +481,37 @@ class BookInfoPage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if (isLoggedIn && !isAdminMode){
-            final response = await request.postJson(
-              "http://localhost:8000/book-info/add-to-cart-flutter/$id/1/",
-              jsonEncode(<String, String>{
-                'amount': '1',
-              })
-            );
+          if (isLoggedIn){
             if (isAdmin && isAdminMode){
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(SnackBar(
-                    content: Text("Anda dalam mode Admin, tidak dapat menambahkan item.", style: TextStyle(color: Colors.grey[100]),),
+                    content: Text("Anda dalam mode Admin, tidak dapat menambahkan item.", style: TextStyle(color: Colors.amber),),
                     behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.amber[300], 
+                    backgroundColor: Colors.amber[50], 
               ));
             } else {
+              final response = await request.postJson(
+                "http://localhost:8000/book-info/add-to-cart-flutter/$id/1/",
+                jsonEncode(<String, String>{
+                  'amount': '1',
+                })
+              );
               if (response['status'] == 'success') {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(SnackBar(
                       content: Text("Berhasil menambahkan item ke keranjang!", style: TextStyle(color: Colors.grey[100]),),
                       behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.indigo[200], 
+                      backgroundColor: Colors.indigoAccent[500], 
                 ));
               } else if (response['status'] == 'failed') {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(SnackBar(
-                      content: Text("Stock habis, gagal menambahkan item!", style: TextStyle(color: Colors.grey[100]),),
+                      content: Text("Stock habis, gagal menambahkan item!", style: TextStyle(color: Colors.red[600]),),
                       behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.red[600], 
+                      backgroundColor: Colors.red[50], 
                 ));
               }
               else {

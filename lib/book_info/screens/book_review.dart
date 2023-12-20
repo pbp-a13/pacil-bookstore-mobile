@@ -13,8 +13,7 @@ class BookReviewPage extends StatelessWidget {
   final int id;
   int rating;
 
-  Future<List<Review>> fetchItem(sort_mode) async {
-    print('sort mode: $sort_mode');
+  Future<List<Review>> sortReview(sort_mode) async {
     var url = Uri.parse('http://localhost:8000/book-info/sort-review/$sort_mode/');
     var response = await http.get(
       url,
@@ -33,6 +32,7 @@ class BookReviewPage extends StatelessWidget {
   }
 
   Future<List<Review>> getBookReviews() async {
+    // return await sortReview(sort_mode)
     final url = Uri.parse('http://localhost:8000/book-info/get-book-review/$id/');
     final response = await http.get(url);
 
