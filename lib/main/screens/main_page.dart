@@ -229,7 +229,6 @@ class _MainPageState extends State<MainPage> {
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-<<<<<<< HEAD
                                 ElevatedButton(
                                     child: const Text(
                                       'Order',
@@ -268,8 +267,6 @@ class _MainPageState extends State<MainPage> {
                                         ));
                                       }
                                     })
-=======
->>>>>>> cdc8415b7c9baf7fb49169a674278ad85145089e
                               ],
                             ),
                           ),
