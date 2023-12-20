@@ -28,6 +28,21 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    var isLoggedIn;
+    var isAdmin;
+    var isAdminMode;
+    var cookieData = request.jsonData;
+    if (cookieData.length == 0) {
+      isLoggedIn = false;
+      isAdmin = false;
+      isAdminMode = false;
+    } else {
+      isLoggedIn = true;
+      isAdmin = cookieData['is_admin'];
+      isAdminMode = cookieData['is_admin_mode'];
+    }
+
+    
     double lebar = MediaQuery.of(context).size.width;
     double tinggi = MediaQuery.of(context).size.height;
 
@@ -149,7 +164,8 @@ class OrderCard extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 10),
-                                SizedBox(
+                                if (isAdmin) ... [
+                                  SizedBox(
                                   width: lebar * 0.5,
                                   child: SizedBox(
                                     child: ElevatedButton(
@@ -166,6 +182,8 @@ class OrderCard extends StatelessWidget {
                                         child: Text(complete)),
                                   ),
                                 ),
+                                ]
+                                
                               ],
                             ),
                           ),

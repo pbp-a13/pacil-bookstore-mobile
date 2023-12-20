@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 # Proyek Tengah Semester Kelompok A13 -- pacil-bookstore
 ## Website: [http://pacil-bookstore.pbp.cs.ui.ac.id/](http://pacil-bookstore.pbp.cs.ui.ac.id/)
 =======
+=======
+>>>>>>> 1a2e8a9de218a4668d1cfa699bd8ef78df9b9559
 # Proyek Akhir Semester Kelompok A13 -- pacil-bookstore
 ## Website: [https://pts-a13-not0nlines-projects.vercel.app/](https://pts-a13-not0nlines-projects.vercel.app/)
 
 ### Link Berita Acara: https://docs.google.com/spreadsheets/d/16WONjLGPqOpak5w6WIo5dhGA5JXVEU15I9eXDtfJNIo/edit?usp=sharing
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 1a2e8a9de218a4668d1cfa699bd8ef78df9b9559
 
 Berikut deskripsi proyek kami.
 
@@ -23,11 +29,18 @@ Berikut deskripsi proyek kami.
 
 
 <h1>
-  Cerita Besar
+  Deskripsi aplikasi
 </h1>
 Berdasarkan tema utama yang diberikan, yaitu "Literasi dan Buku", kelompok kami mengembangkan ide proyek toko buku. Aplikasi toko buku yang kami buat terdiri atas 3 role user, yaitu Admin, Member, dan Non-Member dengan masing-masing <i>role</i> memiliki kapabilitas akses yang berbeda-beda. Pada halaman utama, aplikasi toko buku kami akan menampilkan data umum buku seperti judul, <i>cover</i>, dan harga dengan fitur <i>sort</i> berdasarkan peringkat tertentu juga fitur <i>filter</i> berdasarkan kategori tertentu. Selain itu, pada halaman utama juga terdapat <i>search bar</i> juga <i>navigation bar</i> yang dapat mengarahkan pengguna untuk <i>register</i> atau <i>login</i> atau menampilkan <i>username</i> dari <i>user</i> yang sedang <i>login</i> di aplikasi. Kemudian jika <i>user</i> melakukan klik pada buku yang diinginkan, user akan diarahkan ke halaman berisi info detail buku, dimana pada halaman tersebut juga tersedia <i>button</i> untuk <i>add cart</i> dan <i>checkout</i> (pada Member). Kami juga menyediakan halaman keranjang atau <i>cart</i>, dimana Member dapat melihat item buku yang sudah dimasukkan ke keranjangnya untuk <i>checkout</i>.  Pengiriman buku yang dipesan oleh Member dapat diatur oleh <i>role</i> Admin, dimana <i>role</i> Admin juga memiliki akses untuk melihat info seluruh Member dan dapat berganti ke mode user biasa jika diinginkan.
 
 
+<h1> Integrasi dengan Situs Web  </h1>
+<h3>Berikut adalah langkah-langkah yang akan dilakukan untuk mengintegrasikan aplikasi dengan server web:</h3>
+
+- Mengimplementasikan sebuah wrapper class dengan menggunakan library http dan map untuk mendukung penggunaan cookie-based authentication pada aplikasi. </br>
+- Mengimplementasikan REST API pada Django (views.py) dengan menggunakan JsonResponse atau Django JSON Serializer. </br>
+- Mengimplementasikan desain front-end untuk aplikasi berdasarkan desain website yang sudah ada sebelumnya.</br>
+- Melakukan integrasi antara front-end dengan back-end dengan menggunakan konsep asynchronous HTTP.</br>
 
 <h1>
   Penjelasan dan Pembagian Fitur
@@ -47,7 +60,7 @@ Sumber database: https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
 - PJ: William Joel Matthew Quinn Rompis 2206081843
 - Berisi main page (member) dan main page (admin)
 - Menampilkan semua buku yang tersedia di toko buku.
-- Informasi buku yang ditampilkan: gambar buku, judul buku, pengarang buku, harga buku, dan rating buku
+- Informasi buku yang ditampilkan: judul buku, pengarang buku, harga buku, dan rating buku
 - Buku bisa diklik untuk mengalihkan ke book info page
 - Ada search bar untuk search buku berdasarkan judul atau pengarang.
 - Bisa sort/filter berdasarkan alphabetic, best-seller, top-rated.
@@ -151,7 +164,7 @@ Models:
 </h3>
 
 - Menampilkan buku-buku yang tersedia pada toko buku.
-- Informasi buku yang ditampilkan: gambar buku, judul buku, pengarang buku, harga buku, dan rating buku
+- Informasi buku yang ditampilkan: judul buku, pengarang buku, harga buku, dan rating buku
 - Buku bisa diklik untuk mengalihkan ke book info page
 - Ada search bar untuk search buku berdasarkan judul atau pengarang.
 - Bisa sort/filter berdasarkan alphabetic, best-seller, top-rated.
@@ -281,7 +294,7 @@ Models:
    - Dapat melihat informasi tentang buku, termasuk judul, pengarang, harga, dan rating
    - Jika ingin menambahkan buku ke keranjang (cart), user akan diminta untuk login atau melakukan pendaftaran
 2. Member:
-   - Dapat mengakses halaman "Main page (member)" dan fitur-fitur seluruh situs web
+   - Dapat mengakses halaman "Main page (member)" dan semua fitur aplikasi mobile
    - Bisa melihat dan membeli buku
    - Dapat menambahkan buku ke keranjang (cart) dan melakukan transaksi pembayaran
    - Memiliki saldo yang dapat diisi melalui halaman "Isi Saldo"

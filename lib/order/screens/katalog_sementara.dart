@@ -35,7 +35,7 @@ class _KatalogPageState extends State<KatalogPage> {
     final request = context.watch<CookieRequest>();
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        drawer: const LeftDrawer(),
+        
         appBar: AppBar(
           title: const Text('Katalog'),
         ),

@@ -77,7 +77,7 @@ class _MainPageSearchState extends State<MainPageSearch> {
           ),
         ),
       ),
-      drawer: const LeftDrawer(),
+      // drawer: const LeftDrawer(),
       body: FutureBuilder(
         future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
