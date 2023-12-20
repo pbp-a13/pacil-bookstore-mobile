@@ -28,14 +28,14 @@ class CartModels {
         fields: Fields.fromJson(json["fields"]),
         books: (json["fields"]["books"] as List<dynamic>)
             .map((bookJson) => Book.fromJson(bookJson))
-            .toList(), // Assuming the key for books is "books"
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
         "model": model,
         "pk": pk,
         "fields": fields.toJson(),
-        "books": books.map((book) => book.toJson()).toList(), // Add this line
+        "books": books.map((book) => book.toJson()).toList(),
       };
 }
 
