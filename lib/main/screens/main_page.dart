@@ -9,8 +9,6 @@ import 'package:toko_buku/main/widgets/search_sort.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
-
-
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -22,32 +20,29 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   var value = "*None*";
-  var search_mode = ""; 
+  var search_mode = "";
   var sort_mode = "";
-
-
-
-
 
   Future<List<Book>> fetchItem(value, search_mode, sort_mode) async {
     var url;
-    if (value != null){
+    if (value != null) {
       value = value.replaceAll(' ', '+');
     }
-    if (value == '' || value == null){
+    if (value == '' || value == null) {
       value = "*None*";
     }
-    if (search_mode == null || search_mode == ''){
+    if (search_mode == null || search_mode == '') {
       search_mode = 'title';
       sort_mode = 'title';
     }
-    url = Uri.parse('http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode');
+    url = Uri.parse(
+        'https://pts-a13.vercel.app/json-flutter/$value/$search_mode/$sort_mode');
 
     print(url);
 
     // if (search_mode == "title"){
     //   if (sort_mode == "title"){
-    //     url = 'http://localhost:8000/json-flutter/$value/$search_mode/$sort_mode';
+    //     url = 'https://pts-a13.vercel.app/json-flutter/$value/$search_mode/$sort_mode';
     //   }
     //   else{
 
@@ -58,7 +53,7 @@ class _MainPageState extends State<MainPage> {
 
     //   }
     //   else{
-        
+
     //   }
     // }
 
@@ -78,7 +73,6 @@ class _MainPageState extends State<MainPage> {
     return listItem;
   }
 
-
   String searchText = '';
   String radioGroup1 = '';
   String radioGroup2 = '';
@@ -96,20 +90,15 @@ class _MainPageState extends State<MainPage> {
     sort_mode = radioGroup2;
 
     // Print or perform any action with the collected states
-    
 
     // fetchItem(searchText, radioGroup1, radioGroup2);
-
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     print(request.jsonData);
-            // final request = context.watch<CookieRequest>();
+    // final request = context.watch<CookieRequest>();
     // var value, search_mode, sort_mode = collectStates(searchText, radioGroup1, radioGroup2);
     //     print('build value: $value');
     //     print('build search mode: $search_mode');
@@ -119,18 +108,15 @@ class _MainPageState extends State<MainPage> {
     var isAdmin;
     var isAdminMode;
     var cookieData = request.jsonData;
-    if (cookieData.length == 0){
+    if (cookieData.length == 0) {
       isLoggedIn = false;
       isAdmin = false;
       isAdminMode = false;
-    }
-    else{
+    } else {
       isLoggedIn = true;
       isAdmin = cookieData['is_admin'];
       isAdminMode = cookieData['is_admin_mode'];
     }
-
-
 
     return Scaffold(
       appBar: PreferredSize(
@@ -140,7 +126,8 @@ class _MainPageState extends State<MainPage> {
           title: MyRowWidget(onSubmit: collectStates),
         ),
       ),
-      drawer: LeftDrawer(isLoggedIn: isLoggedIn, isAdmin: isAdmin, isAdminMode: isAdminMode),
+      drawer: LeftDrawer(
+          isLoggedIn: isLoggedIn, isAdmin: isAdmin, isAdminMode: isAdminMode),
       body: FutureBuilder(
         future: fetchItem(value, search_mode, sort_mode),
         builder: (context, AsyncSnapshot snapshot) {
@@ -165,12 +152,11 @@ class _MainPageState extends State<MainPage> {
                       (constraints.maxWidth / cardWidth).floor();
                   var cardColor = Colors.white70;
                   //TODO: Handle Jika berbagai role
-                  if (isLoggedIn){
-                    if (isAdmin){
-                      if (isAdminMode){
-                      cardColor = Colors.yellow;
-                      }
-                      else{}
+                  if (isLoggedIn) {
+                    if (isAdmin) {
+                      if (isAdminMode) {
+                        cardColor = Colors.yellow;
+                      } else {}
                     }
                   }
                   return GridView.builder(
@@ -203,7 +189,6 @@ class _MainPageState extends State<MainPage> {
                         margin: const EdgeInsets.symmetric(
                           horizontal: 5,
                           vertical: 5,
-                          
                         ),
                         child: Container(
                           constraints: const BoxConstraints(
@@ -233,16 +218,16 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
-                                  ),
+                                ),
                                 const SizedBox(height: 10),
-                                  Text(
-                                    "${snapshot.data![index].fields.price}",
-                                    style: const TextStyle(
-                                      fontSize: 9,
-                                    ),
-                                    softWrap: true,
-                                    overflow: TextOverflow.ellipsis,
+                                Text(
+                                  "${snapshot.data![index].fields.price}",
+                                  style: const TextStyle(
+                                    fontSize: 9,
                                   ),
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),

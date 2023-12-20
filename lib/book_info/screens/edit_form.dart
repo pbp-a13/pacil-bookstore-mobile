@@ -32,7 +32,7 @@ class _EditFormPageState extends State<EditFormPage> {
   }
 
   Future<Book> fetchItem(String bookId) async {
-    var url = Uri.parse('http://localhost:8000/book-info/json/${bookId}/');
+    var url = Uri.parse('https://pts-a13.vercel.app/book-info/json/${bookId}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -151,7 +151,7 @@ class _EditFormPageState extends State<EditFormPage> {
                   if (_formKey.currentState?.validate() ?? false) {
                     // Kirim ke Django dan tunggu respons
                     final response = await request.post(
-                      "http://localhost:8000/book-info/edit-flutter/${widget.bookId}/",
+                      "https://pts-a13.vercel.app/book-info/edit-flutter/${widget.bookId}/",
                       // headers: <String, String>{
                       //   'Content-Type': 'application/json; charset=UTF-8',
                       // },
@@ -169,14 +169,14 @@ class _EditFormPageState extends State<EditFormPage> {
                       Navigator.pop(context);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content:
-                            Text("Terdapat kesalahan, silakan coba lagi."),
+                        content: Text("Terdapat kesalahan, silakan coba lagi."),
                       ));
                     }
                     Navigator.pop(context); // Navigate back
                   }
                 },
-                child: const Text('Save', style: TextStyle(color: Colors.indigoAccent)),
+                child: const Text('Save',
+                    style: TextStyle(color: Colors.indigoAccent)),
               ),
             ],
           ),

@@ -28,7 +28,7 @@ class _MainPageSearchState extends State<MainPageSearch> {
         ModalRoute.of(context)!.settings.arguments as BookFilterArguments;
     // ATTN: Ganti URL sesuai kebutuhan
     var urlString =
-        'http://localhost:8000/json/${args.searchBy}/${args.sortBy}';
+        'https://pts-a13.vercel.app/json/${args.searchBy}/${args.sortBy}';
     var url = Uri.parse(urlString);
     var response = await http.get(
       url,

@@ -15,7 +15,7 @@ class BookInfoPage extends StatelessWidget {
   int rating = 0;
 
   Future<Book> getBook() async {
-    var url = "http://localhost:8000/book-info/json/$id/";
+    var url = "https://pts-a13.vercel.app/book-info/json/$id/";
     final response = await http.get(Uri.parse(url), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
@@ -207,7 +207,7 @@ class BookInfoPage extends StatelessWidget {
                                               if (confirmDelete == true) {
                                                 final response =
                                                     await request.postJson(
-                                                        "http://localhost:8000/book-info/delete-flutter/$id/",
+                                                        "https://pts-a13.vercel.app/book-info/delete-flutter/$id/",
                                                         jsonEncode(<String,
                                                             String>{}));
                                                 if (response['status'] ==
@@ -559,7 +559,7 @@ class BookInfoPage extends StatelessWidget {
                 ));
             } else {
               final response = await request.postJson(
-                  "http://localhost:8000/book-info/add-to-cart-flutter/$id/1/",
+                  "https://pts-a13.vercel.app/book-info/add-to-cart-flutter/$id/1/",
                   jsonEncode(<String, String>{
                     'amount': '1',
                   }));

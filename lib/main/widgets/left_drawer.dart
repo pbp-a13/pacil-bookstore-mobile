@@ -195,7 +195,7 @@ class LeftDrawer extends StatelessWidget {
           onTap: () async {
             final response = await request.logout(
                 // TODO: Ganti URL sesuai kebutuhan
-                "http://localhost:8000/auth/logout/");
+                "https://pts-a13.vercel.app/auth/logout/");
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];
@@ -227,7 +227,7 @@ class LeftDrawer extends StatelessWidget {
               title: Text('$listText Mode'),
               onTap: () async {
                 final response = await request
-                    .post('http://localhost:8000/switch_mode_flutter', {
+                    .post('https://pts-a13.vercel.app/switch_mode_flutter', {
                   "username": request.jsonData["username"],
                 });
 
