@@ -14,7 +14,8 @@ class BookReviewPage extends StatelessWidget {
   int rating;
 
   Future<List<Review>> sortReview(sort_mode) async {
-    var url = Uri.parse('http://localhost:8000/book-info/sort-review/$sort_mode/');
+    var url = Uri.parse(
+        'https://pts-a13.vercel.app/book-info/sort-review/$sort_mode/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -33,13 +34,15 @@ class BookReviewPage extends StatelessWidget {
 
   Future<List<Review>> getBookReviews() async {
     // return await sortReview(sort_mode)
-    final url = Uri.parse('http://localhost:8000/book-info/get-book-review/$id/');
+    final url =
+        Uri.parse('https://pts-a13.vercel.app/book-info/get-book-review/$id/');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Parsing respons JSON ke dalam list review
       List<dynamic> jsonReviews = jsonDecode(response.body);
-      List<Review> reviews = jsonReviews.map((json) => Review.fromJson(json)).toList();
+      List<Review> reviews =
+          jsonReviews.map((json) => Review.fromJson(json)).toList();
       return reviews;
     } else if (response.statusCode == 404) {
       print('Book not found.');
@@ -59,12 +62,11 @@ class BookReviewPage extends StatelessWidget {
     var isAdmin;
     var isAdminMode;
     var cookieData = request.jsonData;
-    if (cookieData.length == 0){
+    if (cookieData.length == 0) {
       isLoggedIn = false;
       isAdmin = false;
       isAdminMode = false;
-    }
-    else{
+    } else {
       isLoggedIn = true;
       isAdmin = cookieData['is_admin'];
       isAdminMode = cookieData['is_admin_mode'];
@@ -73,19 +75,26 @@ class BookReviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white,),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Penilaian & Ulasan', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.grey[100]),),
+        title: Text(
+          'Penilaian & Ulasan',
+          style:
+              TextStyle(fontWeight: FontWeight.w700, color: Colors.grey[100]),
+        ),
         backgroundColor: Colors.indigoAccent[400],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
             FutureBuilder(
               future: getBookReviews(),
               builder: (context, AsyncSnapshot snapshot) {
@@ -97,10 +106,10 @@ class BookReviewPage extends StatelessWidget {
                   List<Review> reviews = snapshot.data! ?? [];
                   if (reviews == null || reviews.isEmpty) {
                     return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children : [
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
                           SizedBox(height: 30),
                           Container(
                             width: MediaQuery.of(context).size.width - 32,
@@ -119,9 +128,18 @@ class BookReviewPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("${rating}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
+                                    Text("${rating}",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700)),
                                     SizedBox(width: 4),
-                                    Text("dari 5", style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.5), fontWeight: FontWeight.w700)),
+                                    Text("dari 5",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            fontWeight: FontWeight.w700)),
                                   ],
                                 ),
                                 SizedBox(height: 10),
@@ -130,9 +148,17 @@ class BookReviewPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     for (int i = 1; i <= 5; i++)
-                                      Icon(Icons.star, size: 16, color: i < rating ? Colors.black : Colors.black.withOpacity(0.2)),
+                                      Icon(Icons.star,
+                                          size: 16,
+                                          color: i < rating
+                                              ? Colors.black
+                                              : Colors.black.withOpacity(0.2)),
                                     SizedBox(width: 4),
-                                    Text("(${reviews.length})", style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w700)),
+                                    Text("(${reviews.length})",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700)),
                                   ],
                                 ),
                               ],
@@ -143,18 +169,19 @@ class BookReviewPage extends StatelessWidget {
                             children: [
                               Container(
                                 alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
                                 margin: EdgeInsets.only(left: 16, right: 18),
                                 decoration: BoxDecoration(
-                                  color: Colors.indigoAccent[400], 
+                                  color: Colors.indigoAccent[400],
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
                                   "Apply Sort:",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                               Container(
@@ -172,7 +199,8 @@ class BookReviewPage extends StatelessWidget {
                                       // Implement your sorting logic here
                                     }
                                   },
-                                  items: ['user', 'ulasan'].map((String option) {
+                                  items:
+                                      ['user', 'ulasan'].map((String option) {
                                     return DropdownMenuItem<String>(
                                       value: option,
                                       child: Text(option),
@@ -181,44 +209,48 @@ class BookReviewPage extends StatelessWidget {
                                 ),
                               )
                             ],
-                          ), 
+                          ),
                           Container(
                             height: MediaQuery.of(context).size.height - 378,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(Icons.sentiment_very_dissatisfied, size: 80, color: Colors.black.withOpacity(0.3)),
+                                Icon(Icons.sentiment_very_dissatisfied,
+                                    size: 80,
+                                    color: Colors.black.withOpacity(0.3)),
                                 Text(
                                   "Belum ada penilaian.",
-                                  style: TextStyle(color: Colors.black.withOpacity(0.3), fontSize: 20, fontWeight: FontWeight.w600,),
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.3),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
                             ),
                           ),
-                        ]
-                      )
-                    );
+                        ]));
                   } else {
                     return ListView.builder(
-                      itemCount: reviews.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Column(
-                            children: [
+                        itemCount: reviews.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: Column(children: [
                               ////////////////////////
                               SizedBox(height: 6),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 6),
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Penilaian & Ulasan",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.indigo),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.indigo),
                                 ),
                               ),
                               SizedBox(height: 6),
@@ -229,7 +261,9 @@ class BookReviewPage extends StatelessWidget {
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 207, 222, 255),
-                                  border: Border.all(width: 1, color: Colors.blueGrey.withOpacity(0.5)),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: Colors.blueGrey.withOpacity(0.5)),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Column(
@@ -237,23 +271,45 @@ class BookReviewPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text("${rating}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
+                                        Text("${rating}",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w700)),
                                         SizedBox(width: 4),
-                                        Text("dari 5", style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.5), fontWeight: FontWeight.w700)),
+                                        Text("dari 5",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontWeight: FontWeight.w700)),
                                       ],
                                     ),
                                     SizedBox(height: 10),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         for (int i = 1; i <= 5; i++)
-                                          Icon(Icons.star, size: 16, color: i < rating ? Colors.black : Colors.black.withOpacity(0.2)),
+                                          Icon(Icons.star,
+                                              size: 16,
+                                              color: i < rating
+                                                  ? Colors.black
+                                                  : Colors.black
+                                                      .withOpacity(0.2)),
                                         SizedBox(width: 4),
-                                        Text("(${reviews.length})", style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w700)),
+                                        Text("(${reviews.length})",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w700)),
                                       ],
                                     ),
                                   ],
@@ -264,13 +320,14 @@ class BookReviewPage extends StatelessWidget {
                                 children: [
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
                                     child: Text(
                                       "Apply Sort:",
                                       style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400),
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
                                     ),
                                   ),
                                   Container(
@@ -279,7 +336,13 @@ class BookReviewPage extends StatelessWidget {
                                       color: Color.fromARGB(255, 221, 183, 71),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
-                                    child: Text("Ascending", style: TextStyle(fontSize: 12, color: Colors.white , fontWeight: FontWeight.w400),),
+                                    child: Text(
+                                      "Ascending",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400),
+                                    ),
                                   )
                                 ],
                               ),
@@ -292,55 +355,73 @@ class BookReviewPage extends StatelessWidget {
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    border: Border.all(width: 1, color: Colors.blueGrey.withOpacity(0.5)),
+                                    border: Border.all(
+                                        width: 1,
+                                        color:
+                                            Colors.blueGrey.withOpacity(0.5)),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 10),
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "${reviews[i].username}", 
-                                          style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700),
+                                          "${reviews[i].username}",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700),
                                         ),
-                                      ),                    
+                                      ),
                                       Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 10),
                                         alignment: Alignment.centerLeft,
                                         child: Row(
                                           children: [
-                                            Icon(Icons.star, color: Colors.yellow, size: 20,),
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 20,
+                                            ),
                                             SizedBox(height: 10),
-                                            Text("${reviews[i].rating}", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w700)),
+                                            Text("${reviews[i].rating}",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.w700)),
                                           ],
                                         ),
                                       ),
                                       Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 10),
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "${reviews[i].reviewText}", 
-                                          style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400),
+                                          "${reviews[i].reviewText}",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400),
                                         ),
-                                      ),  
+                                      ),
                                     ],
                                   ),
                                 ),
-                            ]
-                          ),
-                        );
-                      }
-                    );
+                            ]),
+                          );
+                        });
                   }
                 }
               },
             ),
-          ]
-        )
-      ),
+          ])),
       bottomNavigationBar: BottomAppBar(
         height: 90,
         shape: CircularNotchedRectangle(),
@@ -355,23 +436,21 @@ class BookReviewPage extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Ink(
-                  decoration: ShapeDecoration(
-                    color: Colors.white.withOpacity(0.1), // Warna latar belakang icon
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.comment, color: Colors.white),
-                    onPressed: () {},
-                  ),
+            Column(mainAxisSize: MainAxisSize.min, children: [
+              Ink(
+                decoration: ShapeDecoration(
+                  color: Colors.white
+                      .withOpacity(0.1), // Warna latar belakang icon
+                  shape: CircleBorder(),
                 ),
-                SizedBox(height: 4),
-                Text('Ulasan', style: TextStyle(color: Colors.white)),
-              ]
-            ),
+                child: IconButton(
+                  icon: Icon(Icons.comment, color: Colors.white),
+                  onPressed: () {},
+                ),
+              ),
+              SizedBox(height: 4),
+              Text('Ulasan', style: TextStyle(color: Colors.white)),
+            ]),
           ],
         ),
       ),

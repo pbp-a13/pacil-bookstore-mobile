@@ -22,7 +22,7 @@
 //   var sort_mode = 'review_text';
 
 //   Future<List<Review>> fetchReview(sort_mode) async {
-//     var url = Uri.parse('http://localhost:8000/book-info/sort-review-flutter/$sort_mode/');
+//     var url = Uri.parse('https://pts-a13.vercel.app/book-info/sort-review-flutter/$sort_mode/');
 //     var response = await http.get(
 //       url,
 //       headers: {"Content-Type": "application/json"},
