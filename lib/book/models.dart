@@ -27,6 +27,8 @@ class Book {
 
   get title => null;
 
+  get quantity => null;
+
     Map<String, dynamic> toJson() => {
         "model": modelValues.reverse[model],
         "pk": pk,

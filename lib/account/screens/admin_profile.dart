@@ -124,7 +124,7 @@ class _AdminAccountInformationPageState
   }
 
   Future<Widget> _buildAccountInfo(CookieRequest request) async {
-    String djangoServerUrl = 'http://localhost:8000';
+    String djangoServerUrl = 'https://pts-a13.vercel.app';
     String apiUrl = '$djangoServerUrl/auth/get_account';
     final List<dynamic> listtt = [];
 
@@ -150,7 +150,7 @@ class _AdminAccountInformationPageState
   }
 
   Future<List<dynamic>> _fetchAccountInfo(CookieRequest request) async {
-    String djangoServerUrl = 'http://localhost:8000';
+    String djangoServerUrl = 'https://pts-a13.vercel.app';
     String apiUrl = '$djangoServerUrl/auth/get_account';
     final List<dynamic> listtt = [];
 
@@ -183,7 +183,7 @@ class _AdminAccountInformationPageState
 
     try {
       final response = await request.postJson(
-          'http://localhost:8000/auth/update_account', jsonData);
+          'https://pts-a13.vercel.app/auth/update_account', jsonData);
       // final response = await http.post(
       //   Uri.parse(apiUrl),
       //   headers: {'Content-Type': 'application/json'},

@@ -30,7 +30,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
 
   Future<void> _fetchMembers(CookieRequest request) async {
     final data = await request.get(
-      'http://localhost:8000/auth/get_all_members/',
+      'https://pts-a13.vercel.app/auth/get_all_members/',
     );
 
     List<Account> accounts = (data['members'] as List)
