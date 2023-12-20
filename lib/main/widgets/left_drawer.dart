@@ -10,6 +10,7 @@ import 'package:toko_buku/account/screens/admin_profile.dart';
 import 'package:toko_buku/account/screens/all_members_page.dart';
 import 'package:toko_buku/account/screens/login.dart';
 import 'package:toko_buku/account/screens/member_profile.dart';
+import 'package:toko_buku/account/screens/register.dart';
 import 'package:toko_buku/account/screens/review_page.dart';
 import 'package:toko_buku/cart/screen/cart.dart';
 import 'package:toko_buku/cart/screen/show_cart.dart';
@@ -47,7 +48,7 @@ class LeftDrawer extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'Pacil Inventory',
+              'Pacil Bookstore',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 30,
@@ -57,7 +58,7 @@ class LeftDrawer extends StatelessWidget {
             ),
             Padding(padding: EdgeInsets.all(10)),
             Text(
-              "Catat seluruh keperluan inventory-mu di sini!",
+              "Cari Buku Yang Diinginkan",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -81,9 +82,23 @@ class LeftDrawer extends StatelessWidget {
               ));
         },
       ),
+      if (isLoggedIn == false)
+        ListTile(
+          leading: const Icon(Icons.add),
+          title: const Text('Register'),
+          // Bagian redirection ke InventoryFormPage
+          onTap: () async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      RegisterPage(key: key, cookieRequest: request),
+                ));
+          },
+        ),
       if (isLoggedIn && isAdminMode == false)
         ListTile(
-          leading: const Icon(Icons.home_outlined),
+          leading: const Icon(Icons.reviews_rounded),
           title: const Text('See Reviews'),
           // Bagian redirection ke MyHomePage
           onTap: () async {
@@ -101,7 +116,7 @@ class LeftDrawer extends StatelessWidget {
 
       if (isLoggedIn)
         ListTile(
-          leading: const Icon(Icons.home_outlined),
+          leading: const Icon(Icons.account_box),
           title: isAdminMode
               ? const Text('Account Info(Admin)')
               : const Text('Account Info(Member)'),
@@ -132,7 +147,7 @@ class LeftDrawer extends StatelessWidget {
 
       if (isAdminMode == true)
         ListTile(
-          leading: const Icon(Icons.home_outlined),
+          leading: const Icon(Icons.account_box_rounded),
           title: const Text('See All Account Info'),
           // Bagian redirection ke MyHomePage
           onTap: () async {
@@ -147,18 +162,30 @@ class LeftDrawer extends StatelessWidget {
             );
           },
         ),
-      if (isLoggedIn)
-        ListTile(
-            leading: const Icon(Icons.shopping_basket),
-            title: const Text('Daftar Item'),
-            onTap: () {
-                // Route menu ke halaman produk
-                Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ShowCartPage()),
-                );
-            },
-        ),
+//       if (isLoggedIn)
+//         ListTile(
+//             leading: const Icon(Icons.shopping_basket),
+//             title: const Text('Daftar Item'),
+//             onTap: () {
+//                 // Route menu ke halaman produk
+//                 Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (context) => ShowCartPage()),
+//                 );
+//             },
+//         ),
+
+ListTile(
+    leading: const Icon(Icons.shopping_basket),
+    title: const Text('Daftar Item'),
+    onTap: () {
+        // Route menu ke halaman produk
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CartPage()),
+        );
+    },
+),
 
 // ListTile(
 //   leading: const Icon(Icons.add_shopping_cart),
@@ -172,17 +199,16 @@ class LeftDrawer extends StatelessWidget {
 //         ));
 //   },
 // ),
-
     ];
     if (isLoggedIn == true) {
       childrenTemp += [
         ListTile(
-          leading: const Icon(Icons.add_shopping_cart),
+          leading: const Icon(Icons.logout),
           title: const Text('Logout'),
           onTap: () async {
             final response = await request.logout(
                 // TODO: Ganti URL sesuai kebutuhan
-                "http://localhost:8000/auth/logout/");
+                "https://pts-a13.vercel.app/auth/logout/");
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];
@@ -210,11 +236,11 @@ class LeftDrawer extends StatelessWidget {
         }
         childrenTemp += [
           ListTile(
-              leading: const Icon(Icons.add_shopping_cart),
+              leading: const Icon(Icons.mode),
               title: Text('$listText Mode'),
               onTap: () async {
                 final response = await request
-                    .post('http://localhost:8000/switch_mode_flutter', {
+                    .post('https://pts-a13.vercel.app/switch_mode_flutter', {
                   "username": request.jsonData["username"],
                 });
 
@@ -232,11 +258,11 @@ class LeftDrawer extends StatelessWidget {
     } else {
       childrenTemp += [
         ListTile(
-          leading: const Icon(Icons.add_shopping_cart),
+          leading: const Icon(Icons.login),
           title: const Text('Login'),
           // Bagian redirection ke InventoryFormPage
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const LoginPage(),

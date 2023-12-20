@@ -13,7 +13,7 @@
 //   final int id;
 
 //   Future<Book> getBook() async {
-//     var url = "http://localhost:8000/book-info/json/$id/";
+//     var url = "https://pts-a13.vercel.app/book-info/json/$id/";
 //     final response = await http.get(Uri.parse(url), headers: {
 //       "Accept": "application/json",
 //       "Content-Type": "application/json",
@@ -27,7 +27,7 @@
 
 //   Future<List<Review>> fetchItem(sort_mode) async {
 //     print('sort mode: $sort_mode');
-//     var url = Uri.parse('http://localhost:8000/book-info/sort-review/$sort_mode/');
+//     var url = Uri.parse('https://pts-a13.vercel.app/book-info/sort-review/$sort_mode/');
 //     var response = await http.get(
 //       url,
 //       headers: {"Content-Type": "application/json"},
@@ -45,7 +45,7 @@
 //   }
 
 //   Future<List<Review>> getBookReviews() async {
-//     final url = Uri.parse('http://localhost:8000/book-info/get-book-review/$id/');
+//     final url = Uri.parse('https://pts-a13.vercel.app/book-info/get-book-review/$id/');
 //     final response = await http.get(url);
 
 //     if (response.statusCode == 200) {

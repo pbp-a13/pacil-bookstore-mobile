@@ -127,7 +127,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
   }
 
   Future<Widget> _buildAccountInfo(CookieRequest request) async {
-    String djangoServerUrl = 'http://localhost:8000';
+    String djangoServerUrl = 'https://pts-a13.vercel.app';
     String apiUrl = '$djangoServerUrl/auth/get_account';
     final List<dynamic> listtt = [];
 
@@ -149,14 +149,14 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
         Text('Alamat: ${listtt[2]}'),
         Text('Saldo: ${listtt[4]}'),
         // masih belom selesai
-        Text('Buku yang Telah Dibeli: belom sempet bikin'),
-        Text('Reviews: harusnya tar ada tombol buat dua ini'),
+        // Text('Buku yang Telah Dibeli: belom sempet bikin'),
+        // Text('Reviews: harusnya tar ada tombol buat dua ini'),
       ],
     );
   }
 
   Future<List<dynamic>> _fetchAccountInfo(CookieRequest request) async {
-    String djangoServerUrl = 'http://localhost:8000';
+    String djangoServerUrl = 'https://pts-a13.vercel.app';
     String apiUrl = '$djangoServerUrl/auth/get_account';
     final List<dynamic> listtt = [];
 
@@ -189,7 +189,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
 
     try {
       final response = await request.postJson(
-          'http://localhost:8000/auth/update_account', jsonData);
+          'https://pts-a13.vercel.app/auth/update_account', jsonData);
       // final response = await http.post(
       //   Uri.parse(apiUrl),
       //   headers: {'Content-Type': 'application/json'},
