@@ -98,6 +98,18 @@ class LeftDrawer extends StatelessWidget {
           },
         ),
 
+      if (isLoggedIn && isAdminMode == false)
+        ListTile(
+          leading: const Icon(Icons.shopping_basket),
+          title: const Text('Daftar Item'),
+          onTap: () async {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CartPage()),
+              );
+          },
+      ),
+
       if (isLoggedIn)
         ListTile(
           leading: const Icon(Icons.home_outlined),
