@@ -12,9 +12,10 @@ import 'package:toko_buku/main/widgets/left_drawer.dart';
 class BookInfoPage extends StatelessWidget {
   BookInfoPage({super.key, required this.id});
   final int id;
+  int rating = 0;
 
   Future<Book> getBook() async {
-    var url = "http://localhost:8000/json/$id/";
+    var url = "http://localhost:8000/book-info/json/$id/";
     final response = await http.get(Uri.parse(url), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
@@ -85,9 +86,7 @@ class BookInfoPage extends StatelessWidget {
                       );
                     } else {
                       Book book = snapshot.data!;
-                      // return ListView.builder(
-                      //   itemCount: 1,
-                      //   itemBuilder: (context, index) {
+                      rating = book.fields.rating;
                       return Card(
                           child: Column(children: [
                         SizedBox(height: 30),
@@ -208,7 +207,7 @@ class BookInfoPage extends StatelessWidget {
                                               if (confirmDelete == true) {
                                                 final response =
                                                     await request.postJson(
-                                                        "http://localhost:8000/delete-flutter/$id/",
+                                                        "http://localhost:8000/book-info/delete-flutter/$id/",
                                                         jsonEncode(<String,
                                                             String>{}));
                                                 if (response['status'] ==
@@ -242,7 +241,6 @@ class BookInfoPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-
                               Row(
                                 children: [
                                   Container(
@@ -499,33 +497,10 @@ class BookInfoPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 30),
-                              // TextButton.icon(
-                              //   onPressed: () {
-                              //     Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (context) => BookReviewPage(id: id),
-                              //       ),
-                              //     );
-                              //   },
-                              //   style: TextButton.styleFrom(
-                              //     primary: Colors.indigo,
-                              //     padding: EdgeInsets.all(16),
-                              //     shape: RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.circular(8),
-                              //     ),
-                              //     minimumSize: Size(150, 50),
-                              //   ),
-                              //   label: Text("Lihat Penilaian & Ulasan"),
-                              //   icon: Icon(Icons.arrow_circle_right_outlined),
-                              // ),
-                              // SizedBox(height: 60),
                             ],
                           ),
                         ),
                       ]));
-                      //   }
-                      // );
                     }
                   }
                 }),
@@ -558,7 +533,8 @@ class BookInfoPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BookReviewPage(id: id),
+                    builder: (context) =>
+                        BookReviewPage(id: id, rating: rating),
                   ),
                 );
               },
@@ -569,24 +545,24 @@ class BookInfoPage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if (isLoggedIn && !isAdminMode) {
-            final response = await request.postJson(
-                "http://localhost:8000/book-info/add-to-cart-flutter/$id/1/",
-                jsonEncode(<String, String>{
-                  'amount': '1',
-                }));
+          if (isLoggedIn) {
             if (isAdmin && isAdminMode) {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(SnackBar(
                   content: Text(
                     "Anda dalam mode Admin, tidak dapat menambahkan item.",
-                    style: TextStyle(color: Colors.grey[100]),
+                    style: TextStyle(color: Colors.amber),
                   ),
                   behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.amber[300],
+                  backgroundColor: Colors.amber[50],
                 ));
             } else {
+              final response = await request.postJson(
+                  "http://localhost:8000/book-info/add-to-cart-flutter/$id/1/",
+                  jsonEncode(<String, String>{
+                    'amount': '1',
+                  }));
               if (response['status'] == 'success') {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
@@ -596,7 +572,7 @@ class BookInfoPage extends StatelessWidget {
                       style: TextStyle(color: Colors.grey[100]),
                     ),
                     behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.indigo[200],
+                    backgroundColor: Colors.indigoAccent[500],
                   ));
               } else if (response['status'] == 'failed') {
                 ScaffoldMessenger.of(context)
@@ -604,10 +580,10 @@ class BookInfoPage extends StatelessWidget {
                   ..showSnackBar(SnackBar(
                     content: Text(
                       "Stock habis, gagal menambahkan item!",
-                      style: TextStyle(color: Colors.grey[100]),
+                      style: TextStyle(color: Colors.red[600]),
                     ),
                     behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.red[600],
+                    backgroundColor: Colors.red[50],
                   ));
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -620,10 +596,10 @@ class BookInfoPage extends StatelessWidget {
               ..showSnackBar(SnackBar(
                 content: Text(
                   "Harap login terlebih dahulu!",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.indigoAccent),
                 ),
                 behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.grey[900],
+                backgroundColor: Colors.indigo[50],
               ));
           }
         },

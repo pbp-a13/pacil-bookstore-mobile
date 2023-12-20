@@ -32,7 +32,7 @@ class _EditFormPageState extends State<EditFormPage> {
   }
 
   Future<Book> fetchItem(String bookId) async {
-    var url = Uri.parse('http://localhost:8000/json/${bookId}/');
+    var url = Uri.parse('http://localhost:8000/book-info/json/${bookId}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},

@@ -9,25 +9,12 @@ import 'package:toko_buku/book_info/screens/book_info.dart';
 import 'package:toko_buku/main/widgets/left_drawer.dart';
 
 class BookReviewPage extends StatelessWidget {
-  BookReviewPage({super.key, required this.id});
+  BookReviewPage({super.key, required this.id, required this.rating});
   final int id;
+  int rating;
 
-  Future<Book> getBook() async {
-    var url = "http://localhost:8000/json/$id/";
-    final response = await http.get(Uri.parse(url), headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    });
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
-    // print(data);
-    var buku = Book.fromJson(data[0]);
-    // print(buku);
-    return buku;
-  }
-
-  Future<List<Review>> fetchItem(sort_mode) async {
-    print('sort mode: $sort_mode');
-    var url = Uri.parse('http://localhost:8000/sort-review/$sort_mode/');
+  Future<List<Review>> sortReview(sort_mode) async {
+    var url = Uri.parse('http://localhost:8000/book-info/sort-review/$sort_mode/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -45,7 +32,8 @@ class BookReviewPage extends StatelessWidget {
   }
 
   Future<List<Review>> getBookReviews() async {
-    final url = Uri.parse('http://localhost:8000/get-book-review/$id/');
+    // return await sortReview(sort_mode)
+    final url = Uri.parse('http://localhost:8000/book-info/get-book-review/$id/');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -62,7 +50,7 @@ class BookReviewPage extends StatelessWidget {
     }
   }
 
-  String selectedSortOption = 'User';
+  String selectedSortOption = 'user';
 
   @override
   Widget build(BuildContext context) {
@@ -99,19 +87,14 @@ class BookReviewPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             FutureBuilder(
-              future: Future.wait([
-                getBook(),
-                getBookReviews(),
-                // fetchItem(selectedSortOption),
-              ]),
-              builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+              future: getBookReviews(),
+              builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  Book book = snapshot.data![0];
-                  List<Review> reviews = snapshot.data![1] ?? [];
+                  List<Review> reviews = snapshot.data! ?? [];
                   if (reviews == null || reviews.isEmpty) {
                     return Center(
                       child: Column(
@@ -136,7 +119,7 @@ class BookReviewPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("${book.fields.rating}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
+                                    Text("${rating}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
                                     SizedBox(width: 4),
                                     Text("dari 5", style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.5), fontWeight: FontWeight.w700)),
                                   ],
@@ -147,7 +130,7 @@ class BookReviewPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     for (int i = 1; i <= 5; i++)
-                                      Icon(Icons.star, size: 16, color: i < book.fields.rating ? Colors.black : Colors.black.withOpacity(0.2)),
+                                      Icon(Icons.star, size: 16, color: i < rating ? Colors.black : Colors.black.withOpacity(0.2)),
                                     SizedBox(width: 4),
                                     Text("(${reviews.length})", style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w700)),
                                   ],
@@ -161,10 +144,15 @@ class BookReviewPage extends StatelessWidget {
                               Container(
                                 alignment: Alignment.centerLeft,
                                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                margin: EdgeInsets.only(left: 16, right: 18),
+                                decoration: BoxDecoration(
+                                  color: Colors.indigoAccent[400], 
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 child: Text(
                                   "Apply Sort:",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.white,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400),
                                 ),
@@ -184,7 +172,7 @@ class BookReviewPage extends StatelessWidget {
                                       // Implement your sorting logic here
                                     }
                                   },
-                                  items: ['User', 'Ulasan'].map((String option) {
+                                  items: ['user', 'ulasan'].map((String option) {
                                     return DropdownMenuItem<String>(
                                       value: option,
                                       child: Text(option),
@@ -192,14 +180,6 @@ class BookReviewPage extends StatelessWidget {
                                   }).toList(),
                                 ),
                               )
-                              // Container(
-                              //   padding: EdgeInsets.all(4),
-                              //   decoration: BoxDecoration(
-                              //     color: Color.fromARGB(255, 221, 183, 71),
-                              //     borderRadius: BorderRadius.circular(4),
-                              //   ),
-                              //   child: Text("Ascending", style: TextStyle(fontSize: 12, color: Colors.white , fontWeight: FontWeight.w400),),
-                              // )
                             ],
                           ), 
                           Container(
@@ -210,7 +190,7 @@ class BookReviewPage extends StatelessWidget {
                               children: [
                                 Icon(Icons.sentiment_very_dissatisfied, size: 80, color: Colors.black.withOpacity(0.3)),
                                 Text(
-                                  "Belum ada penilaian untuk buku ini.",
+                                  "Belum ada penilaian.",
                                   style: TextStyle(color: Colors.black.withOpacity(0.3), fontSize: 20, fontWeight: FontWeight.w600,),
                                   textAlign: TextAlign.center,
                                 ),
@@ -221,7 +201,6 @@ class BookReviewPage extends StatelessWidget {
                       )
                     );
                   } else {
-                    // List<Review> reviews = snapshot.data ?? [];
                     return ListView.builder(
                       itemCount: reviews.length,
                       itemBuilder: (context, index) {
@@ -261,7 +240,7 @@ class BookReviewPage extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text("${book.fields.rating}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
+                                        Text("${rating}", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
                                         SizedBox(width: 4),
                                         Text("dari 5", style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.5), fontWeight: FontWeight.w700)),
                                       ],
@@ -272,7 +251,7 @@ class BookReviewPage extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         for (int i = 1; i <= 5; i++)
-                                          Icon(Icons.star, size: 16, color: i < book.fields.rating ? Colors.black : Colors.black.withOpacity(0.2)),
+                                          Icon(Icons.star, size: 16, color: i < rating ? Colors.black : Colors.black.withOpacity(0.2)),
                                         SizedBox(width: 4),
                                         Text("(${reviews.length})", style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w700)),
                                       ],
