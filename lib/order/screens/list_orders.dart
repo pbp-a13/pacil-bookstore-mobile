@@ -72,7 +72,22 @@ class _OrdersPageState extends State<OrdersPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
 
+    var isLoggedIn;
+    var isAdmin;
+    var isAdminMode;
+    var cookieData = request.jsonData;
+    if (cookieData.length == 0) {
+      isLoggedIn = false;
+      isAdmin = false;
+      isAdminMode = false;
+    } else {
+      isLoggedIn = true;
+      isAdmin = cookieData['is_admin'];
+      isAdminMode = cookieData['is_admin_mode'];
+    }
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -85,7 +100,7 @@ class _OrdersPageState extends State<OrdersPage> {
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
-      
+      drawer: LeftDrawer(isLoggedIn: isLoggedIn, isAdmin: isAdmin, isAdminMode: isAdminMode),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

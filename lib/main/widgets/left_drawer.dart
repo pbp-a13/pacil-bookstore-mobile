@@ -99,7 +99,7 @@ class LeftDrawer extends StatelessWidget {
           },
         ),
 
-      if (isLoggedIn)
+      if (isLoggedIn) ... [
         ListTile(
           leading: const Icon(Icons.home_outlined),
           title: isAdminMode
@@ -129,6 +129,20 @@ class LeftDrawer extends StatelessWidget {
             }
           },
         ),
+        ListTile(
+          leading: const Icon(Icons.read_more),
+          title: const Text('Your Orders'),
+          onTap: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const OrdersPage(),
+                ));
+          },
+        ),
+      ],
+        
+        
 
       if (isAdminMode == true)
         ListTile(
@@ -188,17 +202,7 @@ class LeftDrawer extends StatelessWidget {
       ),
 
 // buat ngetest aja
-      ListTile(
-        leading: const Icon(Icons.read_more),
-        title: const Text('Your Orders'),
-        onTap: () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const OrdersPage(),
-              ));
-        },
-      ),
+      
     ];
     if (isLoggedIn == true) {
       childrenTemp += [
