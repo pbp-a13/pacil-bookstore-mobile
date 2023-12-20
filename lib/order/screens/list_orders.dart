@@ -25,7 +25,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
   Future<List<Order>>? fetchOrders(request, filter) async {
     var response = await request.postJson(
-        "http://127.0.0.1:8000/order/show_user_orders/",
+        "https://pts-a13.vercel.app/order/show_user_orders/",
         jsonEncode({
           "filter": filter,
         }));

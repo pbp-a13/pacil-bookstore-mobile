@@ -18,7 +18,7 @@ class KatalogPage extends StatefulWidget {
 class _KatalogPageState extends State<KatalogPage> {
   Future<List<Book>> fetchBook(request) async {
     var response = await request.get(
-      'http://127.0.0.1:8000/order/all_books/',
+      'https://pts-a13.vercel.app/order/all_books/',
     );
 
     List<Book> listBook = [];
@@ -92,7 +92,7 @@ class _KatalogPageState extends State<KatalogPage> {
                                           ),
                                           onPressed: () async {
                                             final response = await request.postJson(
-                                                "http://127.0.0.1:8000/order/make_order/",
+                                                "https://pts-a13.vercel.app/order/make_order/",
                                                 jsonEncode(<String, String>{
                                                   'pk': snapshot.data![index].pk
                                                       .toString()

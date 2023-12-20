@@ -17,7 +17,7 @@ class OrderCard extends StatelessWidget {
 
   Future<Book> fetchBook(request) async {
     var response = await request.postJson(
-        "http://127.0.0.1:8000/order/get_book/",
+        "https://pts-a13.vercel.app/order/get_book/",
         jsonEncode(<String, String>{
           'pk': order.fields.book.toString(),
         }));
@@ -116,7 +116,7 @@ class OrderCard extends StatelessWidget {
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           final response = await request.postJson(
-                                              "http://127.0.0.1:8000/order/minus_order/",
+                                              "https://pts-a13.vercel.app/order/minus_order/",
                                               jsonEncode(<String, String>{
                                                 'order_id': order.pk.toString(),
                                               }));
@@ -145,7 +145,7 @@ class OrderCard extends StatelessWidget {
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           final response = await request.postJson(
-                                              "http://127.0.0.1:8000/order/add_order/",
+                                              "https://pts-a13.vercel.app/order/add_order/",
                                               jsonEncode(<String, String>{
                                                 'order_id': order.pk.toString(),
                                               }));
@@ -172,7 +172,7 @@ class OrderCard extends StatelessWidget {
                                         onPressed: () async {
                                           if (!order.fields.isCompleted) {
                                             await request.postJson(
-                                                'http://127.0.0.1:8000/order/complete_order/',
+                                                'https://pts-a13.vercel.app/order/complete_order/',
                                                 jsonEncode({
                                                   "order_id": order.pk.toString(),
                                                 }));
